@@ -1,4 +1,4 @@
-#!/home/saptarsi/django-ecommerce/uat/bin/python3
+#!/home/saptarsi/FreshExpressCustomer/uat/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
