@@ -1,0 +1,2 @@
+django_cockroachdb
+django_cockroachdb_gis

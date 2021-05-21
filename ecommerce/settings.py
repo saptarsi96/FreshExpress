@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('debug', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django_filters',
     'store',
     'cart',
-    'orders'
+    'orders',
+    'ecommerce'
 ]
 
 LOGIN_URL = 'login'
@@ -92,19 +93,21 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+
+# DATABASES = {}
+
+# DATABASES['default'] = dj_database_url.config(
+#     default='sqlite:///db.sqlite3')
+
 DATABASES = {
     'default': {
         'ENGINE' : 'django_cockroachdb',
-        'USER' : 'saptarsi',
-        'PASSWORD': 'bphc12345678',
-        'HOST' : 'free-tier8.aws-ap-southeast-1.cockroachlabs.cloud',
         'PORT' : 26257,
-        'NAME' : 'best-otter-34.defaultdb',
-        'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': 'cc-ca.crt',
-        },
-   }
+        'USER' : 'sapo',
+        'PASSWORD': 'bphc1234',
+        'HOST' : 'localhost',
+        'NAME' : 'demo',
+    }
 }
 
 # Password validation
