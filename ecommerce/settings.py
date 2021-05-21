@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'store',
     'cart',
-    'orders',
-    'ecommerce'
+    'orders'
 ]
 
 LOGIN_URL = 'login'
@@ -93,21 +92,19 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-
-# DATABASES = {}
-
-# DATABASES['default'] = dj_database_url.config(
-#     default='sqlite:///db.sqlite3')
-
 DATABASES = {
     'default': {
         'ENGINE' : 'django_cockroachdb',
+        'USER' : 'saptarsi',
+        'PASSWORD': 'lm7uKuzZHvF4heCl',
+        'HOST' : 'free-tier.gcp-us-central1.cockroachlabs.cloud',
         'PORT' : 26257,
-        'USER' : 'sapo',
-        'PASSWORD': 'bphc1234',
-        'HOST' : 'localhost',
-        'NAME' : 'demo',
-    }
+        'NAME' : 'unripe-lamb-2057.defaultdb',
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': 'cc-ca.crt',
+        },
+   }
 }
 
 # Password validation
@@ -146,18 +143,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-# MEDIA_URL = '/media/'
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static')
-# ]
-
-#Config 1
+MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
