@@ -2,7 +2,9 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from orders.models import Order, OrderItem
 from store.models import Product
+from .inventoryviews import *
 # Create your views here.
+
 def index(request):
     orderlist = {}
     allorders = Order.objects.all()
