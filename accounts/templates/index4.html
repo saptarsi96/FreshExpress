@@ -1,0 +1,101 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard2 {% endblock %} 
+
+<!--{% block body_class %} sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed {% endblock body_class %}-->
+
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="/static/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+  .strikethrough:checked + span{
+    text-decoration:line-through
+  }
+
+{% endblock stylesheets %}
+{% block content %}
+<div class="content-wrapper">
+<div class="container-fluid">
+    <!-- /.card-header -->
+    <h1>List of Orders</h1>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table m-0 " border="0" id="tab1">
+            <colgroup span="1"></colgroup>
+          <tr>
+            <th scope="rowgroup">Order ID</th>
+            <th colspan="1">List of Items</th>
+            <th>Status</th>
+          </tr>
+          
+          <ol class="todo-list" data-widget="todo-list">
+          <tbody>
+              {% for key,vallist in li.items %}
+          <tr>
+              <div class="row">
+                  <div class="col-4 col-md-2">
+            <td scope="rowgroup"><a href="pages/examples/invoice.html">{{key}}</a></td></div>
+            <div class="col-6 col-md-4">
+                <td colspan="1">
+                {% for val in vallist %}
+                <div class="icheck-success d-inline ml-2">
+                    <input type="checkbox" id="item1" class="strikethrough" value="2">
+                    <label for="todoCheck1"></label>
+                </div>
+                <span class="text">{{val}}</span>
+                {% endfor %}
+                </td>
+            </div>
+            <div class="col-6 col-md-4">
+                <td>
+                    <input class="btn btn-sm btn-success"  onClick="myfunction()" type="submit" id="accept" value="Accept">
+                    <input class="btn btn-sm btn-danger" type="submit" id="reject" value="Reject">
+                    <p id="demo"></p>
+
+                </td>
+                </div>
+                </div>
+
+          </tr>
+          {% endfor %}
+        </ol>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.table-responsive -->
+    </div>
+    <!-- /.card-body -->
+    <p id ="displayvalues"></p>
+    <div class="card-footer clearfix">
+      <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Home</a>
+      <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">Accept All Orders</a>
+    </div>
+    <!-- /.card-footer -->
+  </div>
+</div>
+</div>
+</div>
+<script>
+    function myFunction() {
+      alert("hello");
+     /* var selected=new Array();
+      var chkbox=document.getElementById("tab1");
+      var selchk=chkbox.getElementsByTagName("input");
+      for(var i=0;i<selchk.length;i++){
+        if(selchk[i].checked){
+          selected.push(selchk[i].value);
+        }
+      }
+      if(selected.length>0){
+        document.getElementById("displayvalues").innerhtml=selected;
+      }*/
+    }
+    </script>
+  
+  {% endblock content %}
