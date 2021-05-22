@@ -23,3 +23,4 @@ wrapt==1.11.2
 django-cockroachdb
 psycopg2
 gunicorn
+whitenoise
