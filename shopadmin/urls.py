@@ -3,5 +3,7 @@ from . import views
 
 app_name = 'shopadmin'
 urlpatterns = [
-    path('', views.index)
+    path('', views.index),
+    path('store', views.storehome),
+    path('inventory', views.inventoryhome),
 ]
