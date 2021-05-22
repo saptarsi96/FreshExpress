@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 from store.models import Product
 from django.shortcuts import reverse
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
+
 
 # Create your models here.
 
@@ -25,6 +28,7 @@ class Order(models.Model):
     status = models.CharField(
         choices=choices, max_length=10, default='Pending')
     total_price = models.FloatField(null=False, blank=False)
+    rating = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('-created',)
@@ -46,3 +50,5 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'Order Item {self.id}'
+
+

@@ -5,6 +5,7 @@ from django_filters.views import FilterView
 from store.filters import ProductFilter
 from cart.forms import CartForm
 from django.db.models import Count
+from .viewsa import CategoriesList
 
 # Create your views here.
 
@@ -39,7 +40,7 @@ class ProdcutDetails(generic.DetailView):
             total_purchases=Count('ordered'))
 
 
-class CategoriesList(generic.ListView):
-    template_name = 'store/categories_list.html'
-    context_object_name = 'categories'
-    queryset = Category.objects.all().annotate(num_products=Count('products'))
+# class CategoriesList(generic.ListView):
+#     template_name = 'store/categories_list.html'
+#     context_object_name = 'categories'
+#     queryset = Category.objects.all().annotate(num_products=Count('products'))

@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
@@ -41,3 +43,21 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:product_details', kwargs={'slug': self.slug})
+
+class Merchant(models.Model):
+    user = models.ForeignKey(User,on_delete=CASCADE)
+    joindate = models.DateField()
+
+
+class Store(models.Model):
+    name = models.CharField(max_length=1000)
+    address = models.CharField(max_length=1000)
+    contact = models.CharField(max_length=13)
+    long = models.FloatField()
+    lang = models.FloatField()
+    start = models.TimeField()
+    end = models.TimeField()
+    gst = models.CharField(max_length=1000)
+    merchant  = models.ForeignKey(Merchant,on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    total_orders = models.IntegerField(default=0)
