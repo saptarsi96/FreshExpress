@@ -94,25 +94,25 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django_cockroachdb',
-#         'USER' : 'saptarsi',
-#         'PASSWORD': 'lm7uKuzZHvF4heCl',
-#         'HOST' : 'free-tier.gcp-us-central1.cockroachlabs.cloud',
-#         'PORT' : 26257,
-#         'NAME' : 'unripe-lamb-2057.defaultdb',
-#         'OPTIONS': {
-#             'sslmode': 'verify-full',
-#             'sslrootcert': 'cc-ca.crt',
-#         },
-#    }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE' : 'django_cockroachdb',
+        'USER' : 'saptarsi',
+        'PASSWORD': 'lm7uKuzZHvF4heCl',
+        'HOST' : 'free-tier.gcp-us-central1.cockroachlabs.cloud',
+        'PORT' : 26257,
+        'NAME' : 'unripe-lamb-2057.defaultdb',
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': 'cc-ca.crt',
+        },
+   }
+}
 
-DATABASES = {}
+# DATABASES = {}
 
-DATABASES['default'] = dj_database_url.config(
-    default='sqlite:///db.sqlite3')
+# DATABASES['default'] = dj_database_url.config(
+#     default='sqlite:///db.sqlite3')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
