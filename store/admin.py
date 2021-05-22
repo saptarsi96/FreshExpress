@@ -1,5 +1,6 @@
+import store
 from django.contrib import admin
-from store.models import Category, Product
+from store.models import Category, Merchant, Product, Store
 
 # Register your models here.
 
@@ -18,3 +19,12 @@ class ProductAdmin(admin.ModelAdmin):
     raw_id_fields = ('category',)
     list_editable = ('price', 'availibility')
     list_per_page = 24
+
+@admin.register(Merchant)
+class MerchantAdmin(admin.ModelAdmin):
+    list_display = ('user','joindate')
+
+
+@admin.register(Store)
+class StoreAdmin(admin.ModelAdmin):
+    list_display = ('name','address','contact','lat','long','start','end','merchant','rating','total_orders')

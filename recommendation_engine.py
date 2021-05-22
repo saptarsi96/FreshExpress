@@ -1,5 +1,11 @@
-import json,math
+import json,math,os
+import django
 import requests
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
+django.setup()
+from store import models
 
 #Address conversion to latitude and longitude
 
@@ -34,10 +40,19 @@ def get_dist(lat1,lon1,lat2,lon2):
 a,b = get_lat_long("Bits Pilani , Hyderabad, Telengana 500078")
 c,d = get_lat_long("BE-21 Newtown Action Area 1B, Kolkata 700156")
 
-print(get_dist(a,b,c,d))
+#print(get_dist(a,b,c,d))
 
 
 #Finding valid list of shops according to given range defined.
 
-range=5
+range=0.5
 
+valid_shopkeepers = []
+
+customer_lat = 17.41710876415962
+customer_long = 78.44529794540337
+shopkeeper_dataset = models.Store.objects.all()
+for shopkeeper in shopkeeper_dataset.iterator():
+    if(get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)<=range):
+        valid_shopkeepers.append([shopkeeper.name,shopkeeper.contact])
+print(valid_shopkeepers)
