@@ -44,15 +44,50 @@ c,d = get_lat_long("BE-21 Newtown Action Area 1B, Kolkata 700156")
 
 
 #Finding valid list of shops according to given range defined.
+def get_valid_shops():
+    prime_delivery=False
+    range=0.7
+    valid_shopkeepers = {}
+    customer_lat = 17.41710876415962
+    customer_long = 78.44529794540337
+    shopkeeper_dataset = models.Store.objects.all()
+    for shopkeeper in shopkeeper_dataset.iterator():
+        distance = get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)
+        if(distance<=range):
+            valid_shopkeepers[shopkeeper.name] = distance
+    if not valid_shopkeepers:
+        prime_delivery=True                   # Found No STORE nearby. Fall back to amazon flex or amazon prime delivery
+    #valid_shopkeepers = {k: v for k, v in sorted(valid_shopkeepers.items(), key=lambda item: item[1])}             For Sorted Values
+    return prime_delivery,valid_shopkeepers
 
-range=0.5
+def ratings_prepocessor():
+    rated_shopkeepers = {}
+    shopkeeper_dataset = models.Store.objects.all()
+    for shopkeeper in shopkeeper_dataset.iterator():
+        rated_shopkeepers[shopkeeper.name] = shopkeeper.rating
+    return rated_shopkeepers
 
-valid_shopkeepers = []
+def number_of_sucessful_orders():
+    sucessful_orders = {}
+    shopkeeper_dataset = models.Store.objects.all()
+    for shopkeeper in shopkeeper_dataset.iterator():
+        sucessful_orders[shopkeeper.name] = shopkeeper.total_orders
+    return sucessful_orders
 
-customer_lat = 17.41710876415962
-customer_long = 78.44529794540337
-shopkeeper_dataset = models.Store.objects.all()
-for shopkeeper in shopkeeper_dataset.iterator():
-    if(get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)<=range):
-        valid_shopkeepers.append([shopkeeper.name,shopkeeper.contact])
-print(valid_shopkeepers)
+def recommendation_algo():
+    # IF shop is not in range is ineligble move to prime delivery
+    prime,shop_list = get_valid_shops()
+    rated_shopkeepers = ratings_prepocessor()
+    sucessful_orders = number_of_sucessful_orders()
+    if(prime==True):
+        return "Redirect to amazon warehouse for delivery via amazon flex or prime delivery."
+    finalshoplist = {}
+    for i,j in shop_list.items():
+        val = j*0.40                            #Distance Calculation 40% weightage
+        val += rated_shopkeepers[i]*0.20        #Ratings Calculation 20% weightage
+        val += sucessful_orders[i]*0.40         #Succesful orders Calculation 40% weightage
+        finalshoplist[i]=val
+    finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
+    return finalshoplist
+
+print(recommendation_algo())
