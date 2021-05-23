@@ -48,7 +48,10 @@ class Merchant(models.Model):
     user = models.ForeignKey(User,on_delete=CASCADE)
     joindate = models.DateField()
 
-
+choices = (
+    ('Open', 'Open'),
+    ('Closed', 'Closed')
+)
 class Store(models.Model):
     name = models.CharField(max_length=1000)
     address = models.CharField(max_length=1000)
@@ -61,3 +64,5 @@ class Store(models.Model):
     merchant  = models.ForeignKey(Merchant,on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
     total_orders = models.IntegerField(default=0)
+    shop_status= models.CharField(
+        choices=choices, max_length=10,default='Open')

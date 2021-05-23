@@ -21,4 +21,4 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Recommendations)
 class Recommendations(admin.ModelAdmin):
-   list_display = ('shop','score','accepted','order_time','status')
+   list_display = ['shop','score','accepted','order_time']
