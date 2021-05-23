@@ -1,5 +1,5 @@
 from django.contrib import admin
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem,Recommendations
 # Register your models here.
 
 
@@ -18,3 +18,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = ['status', 'paid']
     inlines = [OrderItemTabuler]
     list_per_page = 24
+
+@admin.register(Recommendations)
+class Recommendations(admin.ModelAdmin):
+   list_display = ('shop','score','accepted','order_time','status')

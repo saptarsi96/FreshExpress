@@ -10,6 +10,7 @@ from django.db.models.deletion import CASCADE
 
 choices = (
     ('Pending', 'Pending'),
+    ('Accepted', 'Accepted'),
     ('Packed', 'Packed'),
     ('Shipped', 'Shipped'),
     ('Delivered', 'Delivered')
@@ -52,3 +53,10 @@ class OrderItem(models.Model):
         return f'Order Item {self.id}'
 
 
+class Recommendations(models.Model):
+    shop = models.TextField(null=False,blank=False)
+    score = models.FloatField(null=False,blank=False)
+    accepted = models.BooleanField(default=False)
+    order_time = models.DateTimeField(auto_now=True)
+    status = models.CharField(
+        choices=choices, max_length=10, default='Pending')

@@ -7,6 +7,7 @@ from django.db.models import Count
 from store.models import Product
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from recommendation_engine import *
 # Create your views here.
 
 
@@ -40,6 +41,7 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         OrderItem.objects.bulk_create(orderitems)
         cart.clear()
         messages.success(self.request, 'Your order is successfully placed.')
+        os.system('python3 recommendation_engine.py')
         return redirect('store:product_list')
 
 

@@ -90,4 +90,11 @@ def recommendation_algo():
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
 
-print(recommendation_algo())
+if __name__ == '__main__':
+    from orders.models import Recommendations
+    req_val = recommendation_algo()
+    for i,j in req_val.items():
+        query = Recommendations(shop=i,score=j)
+        query.save()
+
+
