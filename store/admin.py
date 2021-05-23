@@ -27,4 +27,5 @@ class MerchantAdmin(admin.ModelAdmin):
 
 @admin.register(Store)
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('name','address','contact','lat','long','start','end','merchant','rating','total_orders')
+    list_display = ['name','address','contact','lat','long','start','end','merchant','rating','total_orders','shop_status']
+    list_editable=['shop_status']

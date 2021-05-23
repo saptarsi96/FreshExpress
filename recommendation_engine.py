@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
 from store import models
 
-#Address conversion to latitude and longitude
+#todoAddress conversion to latitude and longitude
 
 def get_lat_long(location):
     parameters = {
@@ -21,7 +21,7 @@ def get_lat_long(location):
     return lat,lng
 
 
-#Distance Calculation between 2 points
+#!Distance Calculation between 2 points
 
 R = 6373.0
 
@@ -50,7 +50,7 @@ def get_valid_shops():
     valid_shopkeepers = {}
     customer_lat = 17.41710876415962
     customer_long = 78.44529794540337
-    shopkeeper_dataset = models.Store.objects.all()
+    shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
     for shopkeeper in shopkeeper_dataset.iterator():
         distance = get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)
         if(distance<=range):
@@ -94,7 +94,8 @@ if __name__ == '__main__':
     from orders.models import Recommendations
     req_val = recommendation_algo()
     for i,j in req_val.items():
-        query = Recommendations(shop=i,score=j)
-        query.save()
+        print(i,j)
+        #query = Recommendations(shop=i,score=j)
+        #query.save()
 
 
