@@ -95,10 +95,10 @@ def recommendation_algo():
         return "Redirect to amazon warehouse for delivery via amazon flex or prime delivery."
     finalshoplist = {}
     for i,j in shop_list.items():
-        val = j*0.40*5                          #Distance Calculation 40% weightage   (*5 to scale since range is defined at 2 KMS)
-        adder1 = scaling(upper_shopkeeper,lower_shopkeeper,10,1,rated_shopkeepers[i])        #Scaled
+        val = j*0.40*2.5                          #Distance Calculation 40% weightage   (*2.5 to scale since range is defined at 2 KMS)
+        adder1 = scaling(upper_shopkeeper,lower_shopkeeper,5,0,rated_shopkeepers[i])        #Scaled
         val += adder1 * 0.20                     #Ratings Calculation 20% weightage
-        adder2 = scaling(upper_successful_orders,lower_successful_orders,10,1,sucessful_orders[i])
+        adder2 = scaling(upper_successful_orders,lower_successful_orders,5,0,sucessful_orders[i])
         val += adder2*0.40                       #Succesful orders Calculation 40% weightage
         finalshoplist[i]=val
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
