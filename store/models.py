@@ -66,3 +66,8 @@ class Store(models.Model):
     total_orders = models.IntegerField(default=0)
     shop_status= models.CharField(
         choices=choices, max_length=10,default='Open')
+
+class StoreItem(models.Model):
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
