@@ -61,3 +61,8 @@ class Store(models.Model):
     merchant  = models.ForeignKey(Merchant,on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
     total_orders = models.IntegerField(default=0)
+
+class StoreItem(models.Model):
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
