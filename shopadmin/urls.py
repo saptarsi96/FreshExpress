@@ -6,4 +6,6 @@ urlpatterns = [
     path('', views.index),
     path('store', views.storehome),
     path('inventory', views.inventoryhome),
+    path('redirectstore', views.redirecthome),
+    path('redirectinventory', views.redirectinventory),
 ]
