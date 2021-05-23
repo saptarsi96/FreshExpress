@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from cart.cart import Cart
 from store.models import Product
@@ -6,6 +7,29 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from cart.forms import CartForm
 # Create your views here.
+def displayitems(request):
+    result=Product.objects.all()
+    print(result)
+    return render(request,'index5.html',{"items":result}) 
+
+def order1(request):
+    return HttpResponse("you are too good")
+
+def order(request):
+    orderlist = {}
+    items1=['1kg arhard daal','Surf-Excel','Ariel','Toothpaste','Mouth-wash','Axe perfume','5 Kg flour']
+    items2=['2kg arhard daal','Surf-Excel','Ariel','Toothpaste','Mouth-wash','Axe perfume','5 Kg flour']
+    items3=['3kg arhard daal','Surf-Excel','Ariel','Toothpaste','Mouth-wash','Axe perfume','5 Kg flour']
+    items4=['4kg arhard daal','Surf-Excel','Ariel','Toothpaste','Mouth-wash','Axe perfume','5 Kg flour']
+    items5=['5kg arhard daal','Ariel','Toothpaste','Mouth-wash','Axe perfume','5 Kg flour']
+    orderlist["first"]=items1
+    orderlist["second"]=items2
+    orderlist["third"]=items3
+    orderlist["Fourth"]=items4
+    orderlist["fifth"]=items5
+   
+    context = {'li':orderlist}
+    return render(request,'index4.html',context)
 
 
 @login_required

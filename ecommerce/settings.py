@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django_filters',
     'store',
     'cart',
-    'orders'
+    'orders',
+    'shopadmin',
 ]
 
 LOGIN_URL = 'login'
