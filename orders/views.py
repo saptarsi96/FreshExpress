@@ -59,7 +59,7 @@ class MyOrders(LoginRequiredMixin, generic.ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Order.objects.all().filter(user=self.request.user).order_by('-created').annotate(total_items=Count('items'))
+        return Order.objects.filter(user=self.request.user).order_by('-created').annotate(total_items=Count('items'))
 
 
 class OrderDetails(LoginRequiredMixin, generic.DetailView):
