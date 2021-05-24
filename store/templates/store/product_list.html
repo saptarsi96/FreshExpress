@@ -37,20 +37,19 @@
       <div class="col-lg-4 col-12 mb-2 px-sm-1">
         <div class="card shadow-sm h-100">
           <img
-            src="{% thumbnail product.image 0x150 %}"
+            src="{% thumbnail product.image 0x250 %}"
             alt="No Image"
             class="img-aspect p-2"
           />
           <div class="card-body">
-            <h3 class="card-subtitle font-weight-light">
+            <h6 class="card-subtitle font-weight-light">
               <a href="{% url 'store:product_details' product.slug %}"
-                >{{product.name}}</a
-              >
+                >{{product.name}}</a>
             </h3>
             <h4 class="card-text">
               <span class="badge badge-warning">Rs.{{product.price}}</span>
             </h4>
-            <p class="card-text">{{product.description|truncatewords:23 }}</p>
+            <p class="card-text">{{product.description|truncatewords:10 }}</p>
           </div>
         </div>
       </div>
