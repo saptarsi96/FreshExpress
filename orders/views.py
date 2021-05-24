@@ -8,8 +8,15 @@ from store.models import Product
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from recommendation_engine import *
+import subprocess
 # Create your views here.
-
+import recommendation_engine
+from orders.models import Recommendations
+import json,math,os
+import django
+import requests
+from django.db.models import Max,Min
+from store import models
 
 class CreateOrder(LoginRequiredMixin, generic.CreateView):
     form_class = OrderForm
@@ -41,7 +48,7 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         OrderItem.objects.bulk_create(orderitems)
         cart.clear()
         messages.success(self.request, 'Your order is successfully placed.')
-        os.system('python3 recommendation_engine.py')
+       # os.system('python3 recommendation_engine.py')
         return redirect('store:product_list')
 
 
@@ -79,3 +86,9 @@ class OrderInvoice(LoginRequiredMixin, generic.DetailView):
         if obj.user_id == self.request.user.id or self.request.user.is_superuser:
             return obj
         raise Http404
+class Recommend(LoginRequiredMixin):
+   def recommendation_algo(request):
+        result=recommendation_engine.recommendation_algo()
+        print(result)
+        return render(request,'show_view.html',context={'result':result})
+       #print(output)

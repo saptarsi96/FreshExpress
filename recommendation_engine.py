@@ -1,6 +1,8 @@
 import json,math,os
 import django
 import requests
+from django.db.models import Max,Min
+from orders.models import Recommendations
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
@@ -46,7 +48,7 @@ c,d = get_lat_long("BE-21 Newtown Action Area 1B, Kolkata 700156")
 #Finding valid list of shops according to given range defined.
 def get_valid_shops():
     prime_delivery=False
-    range=0.7
+    range=2
     valid_shopkeepers = {}
     customer_lat = 17.41710876415962
     customer_long = 78.44529794540337
@@ -65,37 +67,48 @@ def ratings_prepocessor():
     shopkeeper_dataset = models.Store.objects.all()
     for shopkeeper in shopkeeper_dataset.iterator():
         rated_shopkeepers[shopkeeper.name] = shopkeeper.rating
-    return rated_shopkeepers
+    upper_range = models.Store.objects.all().aggregate(Max('rating'))                   # To calculate max value for that column
+    lower_range = models.Store.objects.all().aggregate(Min('rating'))                   # To calculate min value for that column
+    return rated_shopkeepers,upper_range['rating__max'],lower_range['rating__min']
 
 def number_of_sucessful_orders():
     sucessful_orders = {}
     shopkeeper_dataset = models.Store.objects.all()
     for shopkeeper in shopkeeper_dataset.iterator():
         sucessful_orders[shopkeeper.name] = shopkeeper.total_orders
-    return sucessful_orders
+    upper_range = models.Store.objects.all().aggregate(Max('total_orders'))
+    lower_range = models.Store.objects.all().aggregate(Min('total_orders'))
+    return sucessful_orders,upper_range['total_orders__max'],lower_range['total_orders__min']
+
+def scaling(OldMax,OldMin,NewMax,NewMin,OldValue):
+    OldRange = (OldMax - OldMin)  
+    NewRange = (NewMax - NewMin)  
+    NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+    return NewValue
+
 
 def recommendation_algo():
     # IF shop is not in range is ineligble move to prime delivery
     prime,shop_list = get_valid_shops()
-    rated_shopkeepers = ratings_prepocessor()
-    sucessful_orders = number_of_sucessful_orders()
+    rated_shopkeepers,upper_shopkeeper,lower_shopkeeper = ratings_prepocessor()
+    sucessful_orders,upper_successful_orders,lower_successful_orders = number_of_sucessful_orders()
     if(prime==True):
         return "Redirect to amazon warehouse for delivery via amazon flex or prime delivery."
     finalshoplist = {}
     for i,j in shop_list.items():
-        val = j*0.40                            #Distance Calculation 40% weightage
-        val += rated_shopkeepers[i]*0.20        #Ratings Calculation 20% weightage
-        val += sucessful_orders[i]*0.40         #Succesful orders Calculation 40% weightage
+        val = j*0.40*2.5                          #Distance Calculation 40% weightage   (*2.5 to scale since range is defined at 2 KMS)
+        adder1 = scaling(upper_shopkeeper,lower_shopkeeper,5,0,rated_shopkeepers[i])        #Scaled
+        val += adder1 * 0.20                     #Ratings Calculation 20% weightage
+        adder2 = scaling(upper_successful_orders,lower_successful_orders,5,0,sucessful_orders[i])
+        val += adder2*0.40                       #Succesful orders Calculation 40% weightage
+        val=round(val,1)
         finalshoplist[i]=val
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
 
-if __name__ == '__main__':
-    from orders.models import Recommendations
-    req_val = recommendation_algo()
-    for i,j in req_val.items():
-        print(i,j)
+
+   
+    
         #query = Recommendations(shop=i,score=j)
         #query.save()
-
 
