@@ -11,7 +11,7 @@ def storehome(request): #to add or remove the stores
         li = list(OrderItem.objects.filter(order = singleorder).values_list('product__name',flat=True))
         orderlist[singleorder.id] = li
     context = {'li':orderlist}
-    return render(request,'index4.html',context)
+    return render(request,'allitems.html',context)
 
 def redirecthome(request): #to add or remove the stores
     orderlist = {}
