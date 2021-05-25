@@ -1,5 +1,5 @@
 from django.contrib import admin
-from orders.models import Order, OrderItem,Recommendations
+from orders.models import Order, OrderItem,Recommendations,Review,Store
 from django.contrib.auth.models import User
 # Register your models here.
 
@@ -20,6 +20,12 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemTabuler]
     list_per_page = 24
 
+
 @admin.register(Recommendations)
 class Recommendations(admin.ModelAdmin):
    list_display = ['shop','score','accepted','order_time']
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display=['order','userrating']
