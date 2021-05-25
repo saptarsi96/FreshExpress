@@ -1,21 +1,21 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 import time
-import os
 
 def getLocation():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    #chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    chrome_options.add_argument("window-size=150,150")
+    options = Options()
+    options.add_argument("--use-fake-ui-for-media-stream")
+    timeout = 20
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox") # linux only
+    options.addArguments("window-size=150,150")
     #options.add_argument("--headless")
     #options.headless = True # also works
-    driver = webdriver.Chrome(executable_path = './chromedriver', chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path = './chromedriver', chrome_options=options)
     driver.get("https://mycurrentlocation.net/")
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, timeout)
     time.sleep(3)
     longitude = driver.find_elements_by_xpath('//*[@id="longitude"]')
     longitude = [x.text for x in longitude]
