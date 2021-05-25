@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect, Http404
+from django.shortcuts import render, redirect, Http404, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views import generic
-from orders.forms import OrderForm
-from orders.models import Order, OrderItem
+from orders.forms import OrderForm, RatingForm
+from orders.models import Order, OrderItem, Rating
 from cart.cart import Cart
 from django.db.models import Count
-from store.models import Product
+import store
+from store.models import Product, Store
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from recommendation_engine import *
@@ -12,11 +14,14 @@ import subprocess
 # Create your views here.
 import recommendation_engine
 from orders.models import Recommendations
-import json,math,os
+import json
+import math
+import os
 import django
 import requests
-from django.db.models import Max,Min
+from django.db.models import Max, Min
 from store import models
+
 
 class CreateOrder(LoginRequiredMixin, generic.CreateView):
     form_class = OrderForm
@@ -86,9 +91,43 @@ class OrderInvoice(LoginRequiredMixin, generic.DetailView):
         if obj.user_id == self.request.user.id or self.request.user.is_superuser:
             return obj
         raise Http404
+
+
 class Recommend(LoginRequiredMixin):
-   def recommendation_algo(request):
-        result=recommendation_engine.recommendation_algo()
+    def recommendation_algo(request):
+        result = recommendation_engine.recommendation_algo()
         print(result)
-        return render(request,'show_view.html',context={'result':result})
-       #print(output)
+        return render(request, 'show_view.html', context={'result': result})
+       # print(output)
+
+
+class addrating(LoginRequiredMixin, generic.CreateView):
+    fields = '__all__'
+    template_name = 'orders/order_details.html'
+    def get_queryset(self):
+        return Order.objects.all()
+
+    def showrating(form):
+        order_id = get_object_or_404(Order, pk=id)
+        pro = Order.objects.get(id=id)
+        if form.method == "POST":
+            form = RatingForm(form.POST)
+            if form.is_valid():
+                #order_id = form.cleaned_data['order_id']
+                #user_id = form.cleaned_data['user_id']
+                #shop_rating = form.cleaned_data['shop_rating']
+
+                #order_id = form.POST.get('order_id', ''),
+                #user_id = form.POST.get('user_id', ''),
+                shop_rating = form.POST.get('shop_rating', ''),
+
+                obj = Rating(order_id=order_id,
+                         shop_rating=shop_rating)
+                obj.save()
+                pro.save()
+                context = {'obj': obj}
+                return render(form, 'orders/order_details.html', context)
+            else:
+                form = RatingForm()
+
+        return HttpResponse('Please rate the product')

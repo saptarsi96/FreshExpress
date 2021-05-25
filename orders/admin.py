@@ -1,5 +1,5 @@
 from django.contrib import admin
-from orders.models import Order, OrderItem,Recommendations
+from orders.models import Order, OrderItem,Recommendations,Rating
 # Register your models here.
 
 
@@ -22,3 +22,7 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(Recommendations)
 class Recommendations(admin.ModelAdmin):
    list_display = ['shop','score','accepted','order_time']
+
+@admin.register(Rating)
+class addrating(admin.ModelAdmin):
+    list_display= ['order_id','shop_rating']
