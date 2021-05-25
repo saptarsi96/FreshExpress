@@ -103,9 +103,56 @@
 
     <!-- Main content -->
     <section class="content">
+      <!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add Store</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        {% load crispy_forms_tags %}
+            <form action="redirectstore" method="post">
+              {% csrf_token %}
+              {{ form | crispy}}
+              <input type="submit" value="Submit">
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>
       <!-- Default box -->
-        <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Add Store
+        </button>
+        </div>
+        <div class="col-md-7">
+          <div class="">
+          <div class="row my-3">
+            {% for shop in shops %}
+            <div class="col-lg-3 col-md-6 col-12 my-2 px-sm-2 d-flex align-items-stretch" style="width: 18rem;">
+              <div class="card w-100">
+                <div class="card-body">
+                  <center><h3 class="font-weight-light">
+                    <a href="inventory/{{shop.id}}">{{shop.name}}</a>
+                  </h3></center>
+                </div>
+                <div class="card-footer text-right">
+                  Rating:{{shop.rating}}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <!--<div class="container">
             <div class="row">
                 <div class="card bg-transparent text-center col-3 ml-4">
                     <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
@@ -121,7 +168,13 @@
                 </div>
             </div>
 
+        </div>-->
         </div>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+
+
         
     </section>
     <!-- /.content -->

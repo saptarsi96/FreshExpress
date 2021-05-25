@@ -108,60 +108,24 @@
         <div class="container">
 
             <div class="row">
-                
+              {% load thumbnail %}
+                {% for item in items %}
                 <div class="card bg-transparent text-center col-3 ml-4">
-                    <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
+                    <img class="img-top" src="{% thumbnail item.product.image 0x150 %}" alt="{{item.product.name}}">
                     <div class="card-img-overlay">
-                        <h5 class="card-title">Wine Glases </h5>
+                        <h5 class="card-title">{{item.product.name}}</h5>
                     </div>
                     <div class="card-body">
                         <div class="custom-control custom-switch custom-switch-lg">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                            <label class="custom-control-label" for="customSwitch2">Wine Glasses</label>
+                            <input type="checkbox" class="custom-control-input" id="p{{item.id}}" {% if item.status %} checked {% endif %}>
+                            <label class="custom-control-label" for="p{{item.id}}" >{{item.product.name}}</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="card bg-transparent text-center col-3 ml-4">
-                    <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
-                    <div class="card-img-overlay">
-                        <h5 class="card-title">Wine Glases </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="custom-control custom-switch custom-switch-lg">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                            <label class="custom-control-label" for="customSwitch3">Wine Glasses</label>
-                        </div>
-                    </div>
-                </div>
+                {% empty %}
 
-                <div class="card bg-transparent text-center col-3 ml-4">
-                    <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
-                    <div class="card-img-overlay">
-                        <h5 class="card-title">Wine Glases </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="custom-control custom-switch custom-switch-lg">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch4">
-                            <label class="custom-control-label" for="customSwitch4">Wine Glasses</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card bg-transparent text-center col-3 ml-4">
-                    <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
-                    <div class="card-img-overlay">
-                        <h5 class="card-title">Wine Glases </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="custom-control custom-switch custom-switch-lg">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Wine Glasses</label>
-                        </div>
-                    </div>
-                </div>
-
-
+                {% endfor %}
             </div>
 
         </div>

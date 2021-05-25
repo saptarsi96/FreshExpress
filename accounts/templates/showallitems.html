@@ -101,19 +101,19 @@
       </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container">
 
-            {% load crispy_forms_tags %}
-            <form action="#" method="post">
-              {% csrf_token %}
-              {{ form | crispy}}
-              <input type="submit" value="Submit">
-          </form>
-        </div>
-      <!-- Default box -->
-     
+    <div class="container">
+      {% load crispy_forms_tags %}
+        <form action="#" method="post">
+            {% csrf_token %}
+            {{ form | crispy}}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    
+    <div class="container">
+      
+    </div>
         
     </section>
     <!-- /.content -->
