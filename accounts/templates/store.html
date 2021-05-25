@@ -105,7 +105,36 @@
     <section class="content">
 
       <!-- Default box -->
-        <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Add Store
+        </button>
+        </div>
+        <div class="col-md-7">
+          <div class="container-fluid"></div>
+          <ul>
+          {%for shop in shops%}
+            <li>{{shop.name}}</li>
+          {% endfor %}
+          </ul>
+          <div class="row my-2">
+            {% for shop in shops %}
+            <div class="col-lg-3 col-md-6 col-12 my-2 px-sm-2 d-flex align-items-stretch" style="width: 18rem;">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h3 class="font-weight-light">
+                    <a href="#">{{shop.name}}</a>
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  {{shop.rating}}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <!--<div class="container">
             <div class="row">
                 <div class="card bg-transparent text-center col-3 ml-4">
                     <img class="img-top" src="https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2019/10/14103841/487d4c1cba3bff07b37f-200x300.png" alt="Card image">
