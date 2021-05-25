@@ -1,3 +1,4 @@
+from shopadmin.inventoryviews import redirectremoveitems
 from django.urls import path
 from . import views
 
@@ -8,4 +9,6 @@ urlpatterns = [
     path('inventory/<int:storeid>', views.inventoryhome),
     path('redirectstore', views.redirecthome),
     path('redirectinventory', views.redirectinventory),
+    path('redirectadditem',views.redirectadditems),
+    path('redirectremoveitem',views.redirectremoveitems),
 ]
