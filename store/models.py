@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 
@@ -66,8 +66,6 @@ class Store(models.Model):
     total_orders = models.IntegerField(default=0)
     shop_status= models.CharField(
         choices=choices, max_length=10,default='Open')
-    def __str__(self):
-        return self.name
 
 class StoreItem(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE)
