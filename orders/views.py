@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from orders.forms import OrderForm, RatingForm
-from orders.models import Order, OrderItem, Rating
+from orders.forms import OrderForm
+from orders.models import Order, OrderItem
 from cart.cart import Cart
 from django.db.models import Count
 import store
@@ -100,34 +100,3 @@ class Recommend(LoginRequiredMixin):
         return render(request, 'show_view.html', context={'result': result})
        # print(output)
 
-
-class addrating(LoginRequiredMixin, generic.CreateView):
-    fields = '__all__'
-    template_name = 'orders/order_details.html'
-    def get_queryset(self):
-        return Order.objects.all()
-
-    def showrating(form):
-        order_id = get_object_or_404(Order, pk=id)
-        pro = Order.objects.get(id=id)
-        if form.method == "POST":
-            form = RatingForm(form.POST)
-            if form.is_valid():
-                #order_id = form.cleaned_data['order_id']
-                #user_id = form.cleaned_data['user_id']
-                #shop_rating = form.cleaned_data['shop_rating']
-
-                #order_id = form.POST.get('order_id', ''),
-                #user_id = form.POST.get('user_id', ''),
-                shop_rating = form.POST.get('shop_rating', ''),
-
-                obj = Rating(order_id=order_id,
-                         shop_rating=shop_rating)
-                obj.save()
-                pro.save()
-                context = {'obj': obj}
-                return render(form, 'orders/order_details.html', context)
-            else:
-                form = RatingForm()
-
-        return HttpResponse('Please rate the product')
