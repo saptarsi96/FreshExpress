@@ -3,7 +3,7 @@ import django
 import requests
 from django.db.models import Max,Min
 from orders.models import Recommendations
-from getlocation import *
+#from getlocation import *
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
@@ -51,7 +51,7 @@ def get_valid_shops():
     prime_delivery=False
     range=2
     valid_shopkeepers = {}
-    customer_lat, customer_long = getLocation()
+    customer_lat, customer_long = 17.41710876415962,78.44529794540337
     shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
     for shopkeeper in shopkeeper_dataset.iterator():
         distance = get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)
