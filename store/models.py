@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, SET_NULL
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
@@ -71,3 +71,8 @@ class StoreItem(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+
+class UserGeoLocation(models.Model):
+    user = models.OneToOneField(User,on_delete=CASCADE)
+    latitude = models.FloatField(blank=False, null=False)
+    longitude = models.FloatField(blank=False, null=False)
