@@ -10,7 +10,7 @@ def getLocation():
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox") # linux only
-    options.addArguments("window-size=150,150")
+    options.add_argument("window-size=150,150")
     #options.add_argument("--headless")
     #options.headless = True # also works
     driver = webdriver.Chrome(executable_path = './chromedriver', chrome_options=options)
