@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
-from store.models import Product
+from store.models import Product,Store
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
+ 
 
 
 # Create your models here.
@@ -60,3 +61,15 @@ class Recommendations(models.Model):
     order_time = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=choices, max_length=10, default='Pending')
+
+choices = (
+    ('one', 1),
+    ('two', 2),
+    ('three', 3),
+    ('four', 4),
+    ('five', 5),
+)
+class Rating(models.Model):
+    order_id=models.ForeignKey(Order,default=None, on_delete=models.CASCADE,related_name='+')
+    shop_rating = models.IntegerField(
+        choices=choices, max_length=10,default='one')

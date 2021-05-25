@@ -7,5 +7,6 @@ urlpatterns = [
     path('recommend',views.Recommend.recommendation_algo,name='recommend'),
     path('my', views.MyOrders.as_view(), name='my'),
     path('details/<int:pk>/', views.OrderDetails.as_view(), name='details'),
-    path('invoice/<int:pk>/', views.OrderInvoice.as_view(), name='invoice')
+    path('invoice/<int:pk>/', views.OrderInvoice.as_view(), name='invoice'),
+    path('rating/<int:pk>/',views.addrating.as_view(),name="addrating"),
 ]
