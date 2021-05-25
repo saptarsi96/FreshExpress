@@ -50,6 +50,25 @@
       Total - <b>Rs.{{order.total_price}}</b>
     </h5>
   </li>
+
+  {% if order.status == 'Delivered' %}
+  <form method="POST" action="{% url 'orders:rating' order.id %}">{%csrf_token %}
+    <ul class="rate-area" style="display:inline;position:absolute">
+    <input type="radio" id="5-star" name="userrating" value="5" /><label for="5-star" title="Amazing">5 stars</label>
+    <input type="radio" id="4-star" name="userrating" value="4" /><label for="4-star" title="Good">4 stars</label>
+    <input type="radio" id="3-star" name="userrating" value="3" /><label for="3-star" title="Average">3 stars</label>
+    <input type="radio" id="2-star" name="userrating" value="2" /><label for="2-star" title="Not Good">2 stars</label>
+    <input type="radio" id="1-star" name="userrating" value="1" /><label for="1-star" title="Bad">1 star</label>
+    <button type="submit" value="Rate">Rate</button>
+    
+    </ul>
+    
+    </form>
+    
+  {% endif %}
+
+
+
 </ul>
 <p class="my-2 text-center">
   {% if order.paid %}
