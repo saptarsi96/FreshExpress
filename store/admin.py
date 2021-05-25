@@ -1,6 +1,6 @@
 import store
 from django.contrib import admin
-from store.models import Category, Merchant, Product, Store
+from store.models import Category, Merchant, Product, Store,StoreItem
 
 # Register your models here.
 
@@ -24,6 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
 class MerchantAdmin(admin.ModelAdmin):
     list_display = ('user','joindate')
 
+
+@admin.register(StoreItem)
+class MerchantAdmin(admin.ModelAdmin):
+    list_display = ('shop','product','status')
 
 @admin.register(Store)
 class StoreAdmin(admin.ModelAdmin):

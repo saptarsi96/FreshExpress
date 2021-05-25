@@ -103,7 +103,30 @@
 
     <!-- Main content -->
     <section class="content">
+      <!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add Store</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        {% load crispy_forms_tags %}
+            <form action="redirectstore" method="post">
+              {% csrf_token %}
+              {{ form | crispy}}
+              <input type="submit" value="Submit">
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>
       <!-- Default box -->
       <div class="row">
         <div class="col-md-1"></div>
@@ -113,23 +136,18 @@
         </button>
         </div>
         <div class="col-md-7">
-          <div class="container-fluid"></div>
-          <ul>
-          {%for shop in shops%}
-            <li>{{shop.name}}</li>
-          {% endfor %}
-          </ul>
-          <div class="row my-2">
+          <div class="">
+          <div class="row my-3">
             {% for shop in shops %}
             <div class="col-lg-3 col-md-6 col-12 my-2 px-sm-2 d-flex align-items-stretch" style="width: 18rem;">
-              <div class="card text-center">
+              <div class="card w-100">
                 <div class="card-body">
-                  <h3 class="font-weight-light">
-                    <a href="#">{{shop.name}}</a>
-                  </h3>
+                  <center><h3 class="font-weight-light">
+                    <a href="inventory/{{shop.id}}">{{shop.name}}</a>
+                  </h3></center>
                 </div>
-                <div class="card-footer">
-                  {{shop.rating}}
+                <div class="card-footer text-right">
+                  Rating:{{shop.rating}}
                 </div>
               </div>
             </div>
@@ -150,7 +168,13 @@
                 </div>
             </div>
 
+        </div>-->
         </div>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+
+
         
     </section>
     <!-- /.content -->
