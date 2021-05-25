@@ -1,6 +1,6 @@
 import store
 from django.contrib import admin
-from store.models import Category, Merchant, Product, Store,StoreItem
+from store.models import Category, Merchant, Product, Store,StoreItem,UserGeoLocation
 
 # Register your models here.
 
@@ -33,3 +33,7 @@ class MerchantAdmin(admin.ModelAdmin):
 class StoreAdmin(admin.ModelAdmin):
     list_display = ['name','address','contact','lat','long','start','end','merchant','rating','total_orders','shop_status']
     list_editable=['shop_status']
+
+@admin.register(UserGeoLocation)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ['user','latitude','longitude']

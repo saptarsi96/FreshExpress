@@ -4,7 +4,7 @@ from orders.models import Order, OrderItem
 from store.models import Merchant, Product,Store, StoreItem
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from .inventoryforms import StoreForm
+from .inventoryforms import StoreForm, StatusForm, StoreItemForm
 from django.http import HttpResponseRedirect
 
 @login_required
@@ -44,16 +44,41 @@ def inventoryhome(request,storeid): #to add or remove the items from the store
     except:
         return HttpResponseRedirect("../store")
     items = StoreItem.objects.filter(shop=shop)
-    context = {'items':items}
+    form = StoreItemForm(initial={'shop':shop})
+    context = {'items':items,'form':form}
     return render(request,'allitems.html',context)
 
 
 @login_required
 def redirectinventory(request): #to add or remove the stores
-    orderlist = {}
-    allorders = Order.objects.all()
-    for singleorder in allorders:
-        li = list(OrderItem.objects.filter(order = singleorder).values_list('product__name',flat=True))
-        orderlist[singleorder.id] = li
-    context = {'li':orderlist}
-    return render(request,'index4.html',context)
+    form = StatusForm(request.POST)
+    if form.is_valid():
+        #status = form.cleaned_data['status']
+        itemid = form.cleaned_data['productid']
+        try:
+            shopitem = StoreItem.objects.get(id=itemid)
+        except:
+            print("item not found")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        print(shopitem)
+        shopitem.status = not shopitem.status
+        shopitem.save()
+    else:
+        print("form not valid")
+        print(form)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def redirectadditems(request):
+    form = StoreItemForm(request.POST)
+    if form.is_valid:
+        # form is valid now add the items
+        item = form.save(commit=False)
+        item = StoreItem.objects.get_or_create(shop=item.shop,product=item.product)
+    else:
+        print("form is invalid")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def redirectremoveitems(request):
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

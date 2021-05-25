@@ -1,21 +1,31 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% load thumbnail %}
 {%block title %}Store{% endblock title %}
 {%block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  window.onload = getLocation();
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-      x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  }
-
-  function showPosition(position) {
-      console.log(position.coords.latitude);
-      console.log(position.coords.longitude);
-  }
-  showPosition();
+  // window.onload = getLocation();
+  var latitude,longitude;
+  if (navigator.geolocation) { //check if geolocation is available
+    navigator.geolocation.getCurrentPosition(function(position){
+      latitude = position.coords.latitude
+      longitude = position.coords.longitude
+      console.log(latitude);
+      console.log(longitude);
+    })};
+  // showPosition();
+  // $(window).on('load', function () {
+  //   console.log(latitude);
+  //   console.log(longitude);
+  //   $.ajax({
+  //      type : 'POST',
+  //      url : 'user/location',
+  //      data : {
+  //          lat : latitude,
+  //          long : longitude,
+  //          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+  //         },
+  //       });
+  // })};
 </script>
 <div class="row mt-3">
   <div class="col-lg-3 col-md-6 col-12 mb-3">

@@ -103,9 +103,43 @@
 
     <!-- Main content -->
     <section class="content">
-
+      
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Items</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              {% load crispy_forms_tags %}
+                  <form action="../redirectadditem" method="post">
+                    {% csrf_token %}
+                    {{ form | crispy}}
+                    <input type="submit" value="Submit">
+                  </form>
+            </div>
+      
+          </div>
+        </div>
+      </div>
       <!-- Default box -->
-        <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal">
+            Add Item
+          </button>
+        </div>
+        
+        <div class="col-md-9">
+        
+        
+        <div class="container-fluid">
 
             <div class="row">
               {% load thumbnail %}
@@ -116,10 +150,14 @@
                         <h5 class="card-title">{{item.product.name}}</h5>
                     </div>
                     <div class="card-body">
+                      <form action="../redirectinventory" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="productid" value="{{item.id}}">
                         <div class="custom-control custom-switch custom-switch-lg">
-                            <input type="checkbox" class="custom-control-input" id="p{{item.id}}" {% if item.status %} checked {% endif %}>
+                            <input type="checkbox" name="status" class="custom-control-input" id="p{{item.id}}" {% if item.status %} checked {% endif %} onchange="this.form.submit()">
                             <label class="custom-control-label" for="p{{item.id}}" >{{item.product.name}}</label>
                         </div>
+                      </form>
                     </div>
                 </div>
 
@@ -127,9 +165,11 @@
 
                 {% endfor %}
             </div>
-
+            </div>
+            
         </div>
-        
+        <div class="col-md-1"></div>
+        </div>
     </section>
     <!-- /.content -->
   </div>

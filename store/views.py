@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.shortcuts import render,HttpResponse
 from django.views import generic
 from store.models import Product, Category
 from django_filters.views import FilterView
 from store.filters import ProductFilter
+from store.models import UserGeoLocation
 from cart.forms import CartForm
 from django.db.models import Count
 from .viewsa import CategoriesList
@@ -44,3 +46,16 @@ class ProdcutDetails(generic.DetailView):
 #     template_name = 'store/categories_list.html'
 #     context_object_name = 'categories'
 #     queryset = Category.objects.all().annotate(num_products=Count('products'))
+
+def save_user_geolocation(request):
+    if request.method == 'POST':
+        latitude = request.POST['lat']
+        longitude = request.POST['long']
+        print(latitude,longitude)
+        UserGeoLocation.create(
+            user = request.user,
+            latitude= latitude,
+            longitude = longitude,
+        )
+        UserGeoLocation.save()
+    return HttpResponse('')
