@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from orders.forms import OrderForm
-from orders.models import Order, OrderItem
+from orders.forms import OrderForm,ReviewForm
+from orders.models import Order, OrderItem,Review
 from cart.cart import Cart
 from django.db.models import Count
 import store
@@ -99,4 +99,26 @@ class Recommend(LoginRequiredMixin):
         print(result)
         return render(request, 'show_view.html', context={'result': result})
        # print(output)
-
+class OrderRating(LoginRequiredMixin, generic.DetailView):      
+    def add_review(request,**kwargs):
+        print("hello")
+        order = get_object_or_404(Order,**kwargs)
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            object=form.save(commit=False)
+            object.order=order
+            object.save()
+            #order = form.cleaned_data['order_id']
+            #userrating = form.cleaned_data['userrating']
+            #userrating=request.POST.get('userrating',''),
+            #print(userrating,order)
+            
+            #obj=Review(order=order,userrating=userrating)
+            #obj.save()
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.
+        # return HttpResponseRedirect(reverse('reviews:wine_detail', args=(wine.id,)))
+        else:
+            print(form)
+        return render(request, 'orders/order_list.html', {'order': order, 'form': form})
