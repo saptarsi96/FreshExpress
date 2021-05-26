@@ -36,12 +36,14 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         context['summary'] = cart_items
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form,**kwargs):
         cart = Cart(self.request)
         if len(cart) == 0:
             return redirect('cart:cart_details')
         order = form.save(commit=False)
         order.user = self.request.user
+        store=Store.objects.get(id=self.kwargs['sid'])
+        order.store=store
         order.total_price = cart.get_total_price()
         order.save()
         products = Product.objects.filter(id__in=cart.cart.keys())
@@ -97,28 +99,16 @@ class Recommend(LoginRequiredMixin):
     def recommendation_algo(request):
         result = recommendation_engine.recommendation_algo()
         print(result)
-        return render(request, 'show_view.html', context={'result': result})
+        return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
 class OrderRating(LoginRequiredMixin, generic.DetailView):      
     def add_review(request,**kwargs):
-        print("hello")
         order = get_object_or_404(Order,**kwargs)
         form = ReviewForm(request.POST)
         if form.is_valid():
             object=form.save(commit=False)
             object.order=order
             object.save()
-            #order = form.cleaned_data['order_id']
-            #userrating = form.cleaned_data['userrating']
-            #userrating=request.POST.get('userrating',''),
-            #print(userrating,order)
-            
-            #obj=Review(order=order,userrating=userrating)
-            #obj.save()
-            # Always return an HttpResponseRedirect after successfully dealing
-            # with POST data. This prevents data from being posted twice if a
-            # user hits the Back button.
-        # return HttpResponseRedirect(reverse('reviews:wine_detail', args=(wine.id,)))
         else:
             print(form)
         return render(request, 'orders/order_list.html', {'order': order, 'form': form})

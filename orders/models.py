@@ -21,6 +21,7 @@ choices = (
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='orders', on_delete=models.CASCADE)
+    store=models.ForeignKey(Store,on_delete=models.CASCADE,related_name='reviews',default=0)
     address = models.CharField(max_length=150, blank=False, null=False)
     pin_code = models.CharField(max_length=10)
     city = models.CharField(max_length=50)
@@ -70,7 +71,9 @@ class Review(models.Model):
         (5, '5'),
     )
     order = models.ForeignKey(
-        Order, related_name='reviews', on_delete=models.CASCADE)
-    '''store = models.ForeignKey(
-        Store, related_name='reviews', on_delete=models.CASCADE,default=0)'''    
+        Order, related_name='reviews', on_delete=models.CASCADE)  
     userrating = models.IntegerField(choices=RATING_CHOICES)
+
+
+
+

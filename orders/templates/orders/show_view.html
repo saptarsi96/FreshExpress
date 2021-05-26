@@ -23,16 +23,19 @@
             color: orange;
                     }
           </style>
-          <span class="fa fa-star checked">{{j}}</span>
+          <span class="fa fa-star checked">{{j.0}}</span>
 
          </div>
 
 
-
+         {%with ravi=j.1%}
          <div style="margin:auto">
-            
-            <a href="{% url 'orders:place' %}" class="btn btn-success">Checkout</a>
-           </div>
+          
+            <a href="{% url 'orders:place' ravi%}" class="btn btn-success">Checkout</a>
+          </div>
+          {%endwith%}
+
+        
         </div>
       </div>
       {% endfor %}

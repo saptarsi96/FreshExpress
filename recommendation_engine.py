@@ -3,7 +3,6 @@ import django
 import requests
 from django.db.models import Max,Min
 from orders.models import Recommendations
-#from getlocation import *
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
@@ -30,18 +29,18 @@ R = 6373.0
 
 
 def get_dist(lat1,lon1,lat2,lon2):
-    lat1 = math.radians(float(lat1))
-    lon1 = math.radians(float(lon1))
-    lat2 = math.radians(float(lat2))
-    lon2 = math.radians(float(lon2))
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
     dlon = lon2-lon1
     dlat = lat2-lat1
     a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R*c
 
-
-
+a,b = get_lat_long("Bits Pilani , Hyderabad, Telengana 500078")
+c,d = get_lat_long("BE-21 Newtown Action Area 1B, Kolkata 700156")
 
 #print(get_dist(a,b,c,d))
 
@@ -51,12 +50,14 @@ def get_valid_shops():
     prime_delivery=False
     range=2
     valid_shopkeepers = {}
-    customer_lat, customer_long = 17.41710876415962,78.44529794540337
+    customer_lat = 17.41710876415962
+    customer_long = 78.44529794540337
     shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
     for shopkeeper in shopkeeper_dataset.iterator():
         distance = get_dist(customer_lat,customer_long,shopkeeper.lat,shopkeeper.long)
         if(distance<=range):
-            valid_shopkeepers[shopkeeper.name] = distance
+            valid_shopkeepers[shopkeeper.name] = [distance,shopkeeper.id]
+            print(valid_shopkeepers[shopkeeper.name])
     if not valid_shopkeepers:
         prime_delivery=True                   # Found No STORE nearby. Fall back to amazon flex or amazon prime delivery
     #valid_shopkeepers = {k: v for k, v in sorted(valid_shopkeepers.items(), key=lambda item: item[1])}             For Sorted Values
@@ -90,19 +91,21 @@ def scaling(OldMax,OldMin,NewMax,NewMin,OldValue):
 def recommendation_algo():
     # IF shop is not in range is ineligble move to prime delivery
     prime,shop_list = get_valid_shops()
+    print(shop_list)
     rated_shopkeepers,upper_shopkeeper,lower_shopkeeper = ratings_prepocessor()
     sucessful_orders,upper_successful_orders,lower_successful_orders = number_of_sucessful_orders()
     if(prime==True):
         return "Redirect to amazon warehouse for delivery via amazon flex or prime delivery."
     finalshoplist = {}
     for i,j in shop_list.items():
-        val = j*0.40*2.5                          #Distance Calculation 40% weightage   (*2.5 to scale since range is defined at 2 KMS)
+        val = j[0]*0.40*2.5                          #Distance Calculation 40% weightage   (*2.5 to scale since range is defined at 2 KMS)
         adder1 = scaling(upper_shopkeeper,lower_shopkeeper,5,0,rated_shopkeepers[i])        #Scaled
         val += adder1 * 0.20                     #Ratings Calculation 20% weightage
         adder2 = scaling(upper_successful_orders,lower_successful_orders,5,0,sucessful_orders[i])
         val += adder2*0.40                       #Succesful orders Calculation 40% weightage
         val=round(val,1)
-        finalshoplist[i]=val
+        finalshoplist[i]=[val,j[1]]
+        print(finalshoplist[i])
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
 
