@@ -3,6 +3,8 @@ import django
 import requests
 from django.db.models import Max,Min
 
+import store
+
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
@@ -86,19 +88,27 @@ def scaling(OldMax,OldMin,NewMax,NewMin,OldValue):
     NewRange = (NewMax - NewMin)  
     NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
     return NewValue
-def ratingupdater():
 
-    review_dataset=orderdb.Review.objects.all()
-    review_list=[]
-    for i in review_dataset.iterator():
-        review_list.append((i.order)[0],i.userrating)
-    print (review_list)
+def ratingupdater():
+    review_dataset=orderdb.Review.objects.all().order_by('-order_id')[:1]       #Get the most recent element of a order
+    for reviews in review_dataset.iterator():
+        order_entity = orderdb.Order.objects.get(id=reviews.order_id)
+        store_entity_orders_table = order_entity.store_id
+
+        store_entity_stores_table = models.Store.objects.get(id=store_entity_orders_table)
+        prev_val = store_entity_stores_table.rating * store_entity_stores_table.total_orders        #Prev Rating
+        prev_val += reviews.userrating                                                              #Updated Rating                
+        new_val = prev_val / (store_entity_stores_table.total_orders + 1)
+        print(round(new_val))
+        store_entity_stores_table.rating = new_val
+        # if reviews.order_id == orderdb.Order.objects.all().filter('order_id'):
+        #     print(orderdb.Order.objects.all().filter('store'))
+        #print(reviews.order_id,reviews.userrating)
 
 
 def recommendation_algo():
     # IF shop is not in range is ineligble move to prime delivery
     prime,shop_list = get_valid_shops()
-    print(shop_list)
     rated_shopkeepers,upper_shopkeeper,lower_shopkeeper = ratings_prepocessor()
     sucessful_orders,upper_successful_orders,lower_successful_orders = number_of_sucessful_orders()
     if(prime==True):
@@ -115,6 +125,7 @@ def recommendation_algo():
         print(finalshoplist[i])
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
+
 if __name__=='__main__':
     ratingupdater()    
 

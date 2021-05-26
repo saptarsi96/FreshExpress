@@ -101,6 +101,7 @@ class Recommend(LoginRequiredMixin):
         print(result)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
+
 class OrderRating(LoginRequiredMixin, generic.DetailView):      
     def add_review(request,**kwargs):
         order = get_object_or_404(Order,**kwargs)
@@ -109,6 +110,8 @@ class OrderRating(LoginRequiredMixin, generic.DetailView):
             object=form.save(commit=False)
             object.order=order
             object.save()
+            result = recommendation_engine.ratingupdater()
+            print("inside views:" + str(result))
         else:
             print(form)
         return render(request, 'orders/order_list.html', {'order': order, 'form': form})
