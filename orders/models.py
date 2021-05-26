@@ -23,6 +23,7 @@ class Order(models.Model):
                              related_name='orders', on_delete=models.CASCADE)
     store=models.ForeignKey(Store,on_delete=models.CASCADE,related_name='reviews',default=0)
     address = models.CharField(max_length=150, blank=False, null=False)
+
     pin_code = models.CharField(max_length=10)
     city = models.CharField(max_length=50)
     paid = models.BooleanField(default=False)
