@@ -101,6 +101,8 @@ def ratingupdater():
         new_val = prev_val / (store_entity_stores_table.total_orders + 1)
         print(round(new_val))
         store_entity_stores_table.rating = new_val
+        store_entity_stores_table.total_orders = store_entity_stores_table.total_orders + 1
+        store_entity_stores_table.save()
         # if reviews.order_id == orderdb.Order.objects.all().filter('order_id'):
         #     print(orderdb.Order.objects.all().filter('store'))
         #print(reviews.order_id,reviews.userrating)
