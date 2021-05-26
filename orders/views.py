@@ -36,12 +36,14 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         context['summary'] = cart_items
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form,**kwargs):
         cart = Cart(self.request)
         if len(cart) == 0:
             return redirect('cart:cart_details')
         order = form.save(commit=False)
         order.user = self.request.user
+        store=Store.objects.get(id=self.kwargs['sid'])
+        order.store=store
         order.total_price = cart.get_total_price()
         order.save()
         products = Product.objects.filter(id__in=cart.cart.keys())
