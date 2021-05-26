@@ -2,13 +2,13 @@ import json,math,os
 import django
 import requests
 from django.db.models import Max,Min
-from orders.models import Recommendations
+
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
 from store import models
-
+from orders import models as orderdb
 #todoAddress conversion to latitude and longitude
 
 def get_lat_long(location):
@@ -86,6 +86,13 @@ def scaling(OldMax,OldMin,NewMax,NewMin,OldValue):
     NewRange = (NewMax - NewMin)  
     NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
     return NewValue
+def ratingupdater():
+
+    review_dataset=orderdb.Review.objects.all()
+    review_list=[]
+    for i in review_dataset.iterator():
+        review_list.append((i.order)[0],i.userrating)
+    print (review_list)
 
 
 def recommendation_algo():
@@ -108,6 +115,8 @@ def recommendation_algo():
         print(finalshoplist[i])
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
+if __name__=='__main__':
+    ratingupdater()    
 
 
    
