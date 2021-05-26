@@ -127,9 +127,7 @@ def recommendation_algo():
         print(finalshoplist[i])
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
     return finalshoplist
-
-if __name__=='__main__':
-    ratingupdater()    
+   
 
 
    
