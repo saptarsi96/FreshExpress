@@ -63,7 +63,6 @@ class Recommendations(models.Model):
     order_time = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=choices, max_length=10, default='Pending')
-        
 class Review(models.Model):
     RATING_CHOICES = (
         (1, '1'),

@@ -82,7 +82,6 @@ def redirectadditems(request):
     else:
         print("form is invalid")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 @login_required
 def redirectremoveitems(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

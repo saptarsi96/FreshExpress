@@ -96,8 +96,10 @@ class OrderInvoice(LoginRequiredMixin, generic.DetailView):
 
 
 class Recommend(LoginRequiredMixin):
-    def recommendation_algo(request):
-        result = recommendation_engine.recommendation_algo()
+    def recommendation_algo(request,**kwargs):
+        plid=kwargs['plid']
+        
+        result = recommendation_engine.recommendation_algo(plid)
         print(result)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
