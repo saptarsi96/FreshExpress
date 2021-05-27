@@ -73,9 +73,15 @@ class Review(models.Model):
         (5, '5'),
     )
     order = models.ForeignKey(
-        Order, related_name='reviews', on_delete=models.CASCADE)  
+        Order, related_name='reviews', on_delete=models.CASCADE)
     userrating = models.IntegerField(choices=RATING_CHOICES)
 
 
+class AcceptedOrderItem(models.Model):
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE)
+    orderitem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
 
-
+class RejectionReason(models.Model):
+    shop = models.ForeignKey(Store,on_delete=models.CASCADE)
+    reason = models.CharField(max_length=2000)
+    orderid = models.ForeignKey(Order,on_delete=models.CASCADE)

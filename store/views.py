@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render,HttpResponse
 from django.views import generic
+from django.views.generic.list import ListView
 from store.models import Product, Category
 from django_filters.views import FilterView
 from store.filters import ProductFilter
@@ -8,6 +9,7 @@ from store.models import UserGeoLocation
 from cart.forms import CartForm
 from django.db.models import Count
 from .viewsa import CategoriesList
+from orders.models import Order
 
 # Create your views here.
 
@@ -29,7 +31,7 @@ class ProductList(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
+    
 
 class ProdcutDetails(generic.DetailView):
     model = Product
