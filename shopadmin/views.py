@@ -33,9 +33,9 @@ def ReceivedOrders(request):
     try:
         shop = Store.objects.filter(merchant__user=request.user)[0]
     except:
-        print("current user does not have any shops, return to the previous page")
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    # get the valid orders for the shop
+        print("current user does not have any shops, return to the home page")
+        return HttpResponseRedirect('/shopadmin')
+    #get the valid orders for the shop
     allorders = Order.objects.all()
     orderlist = []
     # fetcht the items present for the current owner
