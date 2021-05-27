@@ -74,7 +74,11 @@ def redirectadditems(request):
     if form.is_valid:
         # form is valid now add the items
         item = form.save(commit=False)
-        item = StoreItem.objects.get_or_create(shop=item.shop,product=item.product)
+        #apply validation if the shop item belongs to the current use before making changes
+        if(item.shop.merchant.user==request.user):
+            item = StoreItem.objects.get_or_create(shop=item.shop,product=item.product)
+        else:
+            print("shop does not belongs to current user")
     else:
         print("form is invalid")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

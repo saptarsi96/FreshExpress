@@ -61,6 +61,8 @@ class Recommendations(models.Model):
     order_time = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=choices, max_length=10, default='Pending')
+
+
 class Review(models.Model):
     RATING_CHOICES = (
         (1, '1'),
@@ -74,3 +76,13 @@ class Review(models.Model):
     '''store = models.ForeignKey(
         Store, related_name='reviews', on_delete=models.CASCADE,default=0)'''    
     userrating = models.IntegerField(choices=RATING_CHOICES)
+
+
+class AcceptedOrderItem(models.Model):
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE)
+    orderitem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
+
+class RejectionReason(models.Model):
+    shop = models.ForeignKey(Store,on_delete=models.CASCADE)
+    reason = models.CharField(max_length=2000)
+    orderid = models.ForeignKey(Order,on_delete=models.CASCADE)

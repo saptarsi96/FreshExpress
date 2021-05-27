@@ -22,3 +22,11 @@ class StoreItemForm(ModelForm):
         fields = "__all__"
         exclude = ['status']
         widgets = {'shop':forms.HiddenInput()}
+
+
+class RemoveItemForm(forms.Form):
+    storeitemid = forms.CharField()
+
+class OrderItemForm(forms.Form):
+    orderitems = forms.CharField(required=False)
+    orderid = forms.CharField(required=False)
