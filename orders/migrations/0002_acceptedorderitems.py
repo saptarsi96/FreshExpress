@@ -15,9 +15,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AcceptedOrderItems',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('orderitem', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders.orderitem')),
-                ('shop', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.store')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('orderitem', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='orders.orderitem')),
+                ('shop', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='store.store')),
             ],
         ),
     ]

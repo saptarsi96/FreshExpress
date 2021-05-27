@@ -1,10 +1,9 @@
 from django.db import models
 from django.conf import settings
-from store.models import Product,Store
+from store.models import Product, Store
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
- 
 
 
 # Create your models here.
@@ -21,7 +20,8 @@ choices = (
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='orders', on_delete=models.CASCADE)
-    store=models.ForeignKey(Store,on_delete=models.CASCADE,related_name='reviews',default=0)
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, related_name='reviews', default=0)
     address = models.CharField(max_length=150, blank=False, null=False)
 
     pin_code = models.CharField(max_length=10)
@@ -57,12 +57,14 @@ class OrderItem(models.Model):
 
 
 class Recommendations(models.Model):
-    shop = models.TextField(null=False,blank=False)
-    score = models.FloatField(null=False,blank=False)
+    shop = models.TextField(null=False, blank=False)
+    score = models.FloatField(null=False, blank=False)
     accepted = models.BooleanField(default=False)
     order_time = models.DateTimeField(auto_now=True)
     status = models.CharField(
         choices=choices, max_length=10, default='Pending')
+
+
 class Review(models.Model):
     RATING_CHOICES = (
         (1, '1'),
@@ -80,7 +82,8 @@ class AcceptedOrderItem(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE)
     orderitem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
 
+
 class RejectionReason(models.Model):
-    shop = models.ForeignKey(Store,on_delete=models.CASCADE)
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE)
     reason = models.CharField(max_length=2000)
-    orderid = models.ForeignKey(Order,on_delete=models.CASCADE)
+    orderid = models.ForeignKey(Order, on_delete=models.CASCADE)

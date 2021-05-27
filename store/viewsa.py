@@ -7,7 +7,6 @@ from cart.forms import CartForm
 from django.db.models import Count
 
 
-
 class CategoriesList(generic.ListView):
     template_name = 'store/categories_list.html'
     context_object_name = 'categories'
