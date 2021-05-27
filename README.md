@@ -8,13 +8,6 @@
 
 30th MAY 2021
 
-##
-
-## ![](RackMultipart20210527-4-be7gta_html_b85e71fc7d8a7822.gif)
-
-# 
-
-# 
 <div style="text-align: right">
 
 # Introduction & Background
