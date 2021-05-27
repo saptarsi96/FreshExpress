@@ -4,13 +4,13 @@ from . import views
 
 app_name = 'shopadmin'
 urlpatterns = [
-    path('r', views.index),
+    path('', views.index),
     path('store', views.storehome),
     path('inventory/<int:storeid>', views.inventoryhome),
     path('redirectstore', views.redirecthome),
     path('redirectinventory', views.redirectinventory),
     path('redirectadditem',views.redirectadditems),
     path('redirectremoveitem',views.redirectremoveitems),
-    path('', views.ReceivedOrders),
+    path('receivedorders', views.ReceivedOrders),
     path('redirectreceivedorders', views.RedirectReceivedOrders),
 ]
