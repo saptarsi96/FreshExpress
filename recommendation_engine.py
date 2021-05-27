@@ -190,7 +190,7 @@ def recommendation_algo(plid):
             5,
             0,
             sucessful_orders[i])
-        val += adder2 * 0.40  # Succesful orders Calculation 20% weightage
+        val += adder2 * 0.20  # Succesful orders Calculation 20% weightage
         val = round(val, 1)
         finalshoplist[i] = [val, j[1]]
     
