@@ -86,15 +86,6 @@ def scaling(OldMax,OldMin,NewMax,NewMin,OldValue):
     NewRange = (NewMax - NewMin)  
     NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
     return NewValue
-def ratingupdater():
-
-    review_dataset=orderdb.Review.objects.all()
-    review_list=[]
-    for i in review_dataset.iterator():
-        review_list.append((i.order)[0],i.userrating)
-    print (review_list)
-
-
 def recommendation_algo():
     # IF shop is not in range is ineligble move to prime delivery
     prime,shop_list = get_valid_shops()
@@ -114,13 +105,4 @@ def recommendation_algo():
         finalshoplist[i]=[val,j[1]]
         print(finalshoplist[i])
     finalshoplist = {k: v for k, v in sorted(finalshoplist.items(), key=lambda item: item[1],reverse=True)} 
-    return finalshoplist
-if __name__=='__main__':
-    ratingupdater()    
-
-
-   
-    
-        #query = Recommendations(shop=i,score=j)
-        #query.save()
-
+    return finalshoplist  
