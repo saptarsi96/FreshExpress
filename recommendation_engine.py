@@ -190,7 +190,7 @@ def recommendation_algo(plid):
             5,
             0,
             sucessful_orders[i])
-        val += adder2 * 0.40  # Succesful orders Calculation 40% weightage
+        val += adder2 * 0.20  # Succesful orders Calculation 20% weightage
         val = round(val, 1)
         finalshoplist[i] = [val, j[1]]
     
@@ -200,6 +200,9 @@ def recommendation_algo(plid):
             if(v[1]==key):
                 v.append(value)
                 v.append(len(plid))
+                adder3 = value/len(plid)
+                v[0] += adder3 * 0.20 * 5          # Total number of orders deliverable 20% weightage and range scaling to 5
+                v[0] = round(v[0],1)
             else:
                 pass    
     print(finalshoplist)    
