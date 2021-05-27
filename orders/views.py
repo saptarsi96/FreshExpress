@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from orders.forms import OrderForm,ReviewForm
-from orders.models import Order, OrderItem,Review
+from orders.forms import OrderForm, ReviewForm
+from orders.models import Order, OrderItem, Review
 from cart.cart import Cart
 from django.db.models import Count
 import store
@@ -36,14 +36,14 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         context['summary'] = cart_items
         return context
 
-    def form_valid(self, form,**kwargs):
+    def form_valid(self, form, **kwargs):
         cart = Cart(self.request)
         if len(cart) == 0:
             return redirect('cart:cart_details')
         order = form.save(commit=False)
         order.user = self.request.user
-        store=Store.objects.get(id=self.kwargs['sid'])
-        order.store=store
+        store = Store.objects.get(id=self.kwargs['sid'])
+        order.store = store
         order.total_price = cart.get_total_price()
         order.save()
         products = Product.objects.filter(id__in=cart.cart.keys())
@@ -96,21 +96,22 @@ class OrderInvoice(LoginRequiredMixin, generic.DetailView):
 
 
 class Recommend(LoginRequiredMixin):
-    def recommendation_algo(request,**kwargs):
-        plid=kwargs['plid']
-        
+    def recommendation_algo(request, **kwargs):
+        plid = kwargs['plid']
+
         result = recommendation_engine.recommendation_algo(plid)
         print(result)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
 
-class OrderRating(LoginRequiredMixin, generic.DetailView):      
-    def add_review(request,**kwargs):
-        order = get_object_or_404(Order,**kwargs)
+
+class OrderRating(LoginRequiredMixin, generic.DetailView):
+    def add_review(request, **kwargs):
+        order = get_object_or_404(Order, **kwargs)
         form = ReviewForm(request.POST)
         if form.is_valid():
-            object=form.save(commit=False)
-            object.order=order
+            object = form.save(commit=False)
+            object.order = order
             object.save()
             result = recommendation_engine.ratingupdater()
             print("inside views:" + str(result))
