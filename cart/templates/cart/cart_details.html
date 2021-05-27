@@ -64,7 +64,9 @@
 </div>
 <div class="text-center">
   <a href="{% url 'cart:clear' %}" class="btn btn-warning">Clear Cart</a>
-   <a href="{% url 'orders:recommend' %}" class="btn btn-success">Get Shops</a>
+  {%with plid=productlist%} 
+  <a href="{% url 'orders:recommend' plid %}" class="btn btn-success">Get Shops</a>
+  {%endwith%}
 </div>
 {% else %}
 <div class="text-center">

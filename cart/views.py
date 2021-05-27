@@ -50,6 +50,8 @@ def add_to_cart(request):
 def cart_details(request):
     cart = Cart(request)
     products = Product.objects.filter(pk__in=cart.cart.keys())
+    productkeys=list(cart.cart.keys())
+    productlist = ' '.join(map(str,productkeys))
 
     def map_function(p):
         pid = str(p.id)
@@ -57,7 +59,7 @@ def cart_details(request):
         return {'product': p, 'quantity': q, 'total': p.price*q, 'form': CartForm(initial={'quantity': q, 'product_id': pid})}
 
     cart_items = map(map_function, products)
-    return render(request, 'cart/cart_details.html', {'cart_items': cart_items, 'total': cart.get_total_price()})
+    return render(request, 'cart/cart_details.html', {'cart_items': cart_items, 'total': cart.get_total_price(),'productlist':productlist})
 
 
 @login_required

@@ -24,9 +24,14 @@
                     }
           </style>
           <span class="fa fa-star checked">{{j.0}}</span>
-
          </div>
-
+         <div style="margin:auto">
+         {%if j.2 and j.3%}
+         <h6>Items Available-{{j.2}}{{"/"}}{{j.3}}</h6>
+           {%else%}
+         <h6>Items Available-None</h6>  
+         {%endif%}
+         </div>
 
          {%with ravi=j.1%}
          <div style="margin:auto">

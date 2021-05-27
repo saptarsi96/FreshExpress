@@ -28,6 +28,7 @@ class MerchantAdmin(admin.ModelAdmin):
 @admin.register(StoreItem)
 class MerchantAdmin(admin.ModelAdmin):
     list_display = ('shop','product','status')
+    list_filter=['shop']
 
 @admin.register(Store)
 class StoreAdmin(admin.ModelAdmin):
