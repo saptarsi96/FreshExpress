@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript">
+        function codeAddress() {
+            
+           //get the orderelements from the page
+           var orderelements = document.getElementsByClassName("order");
+           
+           for(var i=0;i<orderelements.length;i++){
+                
+                console.log(orderelements[i].id);
+                //get the orderitem elements for the particular order
+                orderelements[i].value ="";
+                var orderitems = document.getElementsByClassName(orderelements[i].id);
+                for( var j=0;j<orderitems.length;j++){
+                    if(orderitems[j].checked == true){
+                        console.log(orderitems[j]);
+                        if(orderelements[i].value !="")
+                        orderelements[i].value += ("_");
+                        orderelements[i].value += (orderitems[j].name);
+                        
+                    }
+                    
+                }
+           }
+        }
+        window.onload = codeAddress;
+        </script>
+    </head>
+    <body>
+<table border="1">  
+    {{present}}
+{% for orderid in page_obj %}
+<tr>
+      <td>
+        {% for item in orderid %}
+            <input type="checkbox" name="{{item.id}}" class="order{{item.order__id}}" {%if item.product__id in present %} checked {% endif %} onclick="codeAddress()"> {{item.product__name}} {{item.product__id}} <br>
+        {% endfor %}
+        <form action="redirectreceivedorders" method="POST"> 
+            {% csrf_token %}
+        <input type="text" id="order{{orderid.0.order__id}}" name="orderitems" class="order" value="" hidden>
+        <input type="text" id="orderid" name="orderid" value="{{orderid.0.order__id}}" hidden>
+    </td>
+    <td>
+        <input type="submit" name='Accept' value="Accept"> 
+        <input type="submit" name ='Reject' value="Reject"> 
+    </td>
+    </form>
+</tr>
+{% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from orders.models import Order, OrderItem,Recommendations,Review,Store
+from orders.models import Order, OrderItem,Recommendations,Review,Store,AcceptedOrderItem,RejectionReason
 from django.contrib.auth.models import User
 # Register your models here.
 
@@ -29,3 +29,13 @@ class Recommendations(admin.ModelAdmin):
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display=['order','userrating']
+
+
+@admin.register(AcceptedOrderItem)
+class AcceptedOrderItemsAdmin(admin.ModelAdmin):
+    list_display=['shop','orderitem']
+
+
+@admin.register(RejectionReason)
+class AcceptedOrderItemsAdmin(admin.ModelAdmin):
+    list_display=['shop','orderid','reason']

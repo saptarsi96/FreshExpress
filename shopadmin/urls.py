@@ -11,4 +11,6 @@ urlpatterns = [
     path('redirectinventory', views.redirectinventory),
     path('redirectadditem',views.redirectadditems),
     path('redirectremoveitem',views.redirectremoveitems),
+    path('receivedorders', views.ReceivedOrders),
+    path('redirectreceivedorders', views.RedirectReceivedOrders),
 ]
