@@ -44,14 +44,18 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('store:product_details', kwargs={'slug': self.slug})
 
+
 class Merchant(models.Model):
-    user = models.ForeignKey(User,on_delete=CASCADE)
+    user = models.ForeignKey(User, on_delete=CASCADE)
     joindate = models.DateField()
+
 
 choices = (
     ('Open', 'Open'),
     ('Closed', 'Closed')
 )
+
+
 class Store(models.Model):
     name = models.CharField(max_length=1000)
     address = models.CharField(max_length=1000)
@@ -61,18 +65,20 @@ class Store(models.Model):
     start = models.TimeField()
     end = models.TimeField()
     gst = models.CharField(max_length=1000)
-    merchant  = models.ForeignKey(Merchant,on_delete=models.CASCADE)
+    merchant = models.ForeignKey(Merchant, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
     total_orders = models.IntegerField(default=0)
-    shop_status= models.CharField(
-        choices=choices, max_length=10,default='Open')
+    shop_status = models.CharField(
+        choices=choices, max_length=10, default='Open')
+
 
 class StoreItem(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
+
 class UserGeoLocation(models.Model):
-    user = models.OneToOneField(User,on_delete=CASCADE)
+    user = models.OneToOneField(User, on_delete=CASCADE)
     latitude = models.FloatField(blank=False, null=False)
     longitude = models.FloatField(blank=False, null=False)

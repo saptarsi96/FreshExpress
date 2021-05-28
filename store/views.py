@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render, HttpResponse
 from django.views import generic
 from django.views.generic.list import ListView
 from store.models import Product, Category
@@ -31,7 +31,7 @@ class ProductList(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-    
+
 
 class ProdcutDetails(generic.DetailView):
     model = Product
@@ -53,11 +53,11 @@ def save_user_geolocation(request):
     if request.method == 'POST':
         latitude = request.POST['lat']
         longitude = request.POST['long']
-        print(latitude,longitude)
+        print(latitude, longitude)
         UserGeoLocation.create(
-            user = request.user,
-            latitude= latitude,
-            longitude = longitude,
+            user=request.user,
+            latitude=latitude,
+            longitude=longitude,
         )
         UserGeoLocation.save()
     return HttpResponse('')

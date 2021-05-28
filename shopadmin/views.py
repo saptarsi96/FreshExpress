@@ -10,14 +10,16 @@ from django.forms import formset_factory
 from .inventoryforms import OrderItemForm
 # Create your views here.
 
+
 def index(request):
     orderlist = {}
     allorders = Order.objects.all()
     for singleorder in allorders:
-        li = list(OrderItem.objects.filter(order = singleorder).values_list('product__name',flat=True))
+        li = list(OrderItem.objects.filter(
+            order=singleorder).values_list('product__name', flat=True))
         orderlist[singleorder.id] = li
-    context = {'li':orderlist}
-    return render(request,'index4.html',context)
+    context = {'li': orderlist}
+    return render(request, 'index4.html', context)
 
 
 class OrdersList(ListView):
@@ -52,8 +54,8 @@ def ReceivedOrders(request):
     paginator = Paginator(orderlist, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj':page_obj,'present':present}
-    return render(request,'received.html',context)
+    context = {'page_obj': page_obj, 'present': present}
+    return render(request, 'received.html', context)
 
 
 @login_required
@@ -71,12 +73,11 @@ def RedirectReceivedOrders(request):
             items = form.cleaned_data['orderitems']
             orderitems = items.split('_')
             # if no values are accepted return
-            if(items ==""):
-                print("empty list")
+            if(items == ""):
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            items  = OrderItem.objects.filter(pk__in=orderitems)
+            items = OrderItem.objects.filter(pk__in=orderitems)
             for item in items:
-                ob = AcceptedOrderItem(shop=shop,orderitem=item)
+                ob = AcceptedOrderItem(shop=shop, orderitem=item)
                 ob.save()
             # store the given order items in the db
         else:
@@ -90,4 +91,3 @@ def RedirectReceivedOrders(request):
     else:
         print("form is invalid")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-

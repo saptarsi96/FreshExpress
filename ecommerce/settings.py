@@ -96,17 +96,17 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE' : 'django_cockroachdb',
-        'USER' : 'saptarsi',
+        'ENGINE': 'django_cockroachdb',
+        'USER': 'saptarsi',
         'PASSWORD': 'lm7uKuzZHvF4heCl',
-        'HOST' : 'free-tier.gcp-us-central1.cockroachlabs.cloud',
-        'PORT' : 26257,
-        'NAME' : 'unripe-lamb-2057.defaultdb',
+        'HOST': 'free-tier.gcp-us-central1.cockroachlabs.cloud',
+        'PORT': 26257,
+        'NAME': 'unripe-lamb-2057.defaultdb',
         'OPTIONS': {
             'sslmode': 'verify-full',
             'sslrootcert': 'cc-ca.crt',
         },
-   }
+    }
 }
 
 # DATABASES = {}

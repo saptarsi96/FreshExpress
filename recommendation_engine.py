@@ -1,3 +1,5 @@
+from store.models import StoreItem
+from store.models import Product, Store
 from orders import models as orderdb
 from store import models
 import json
@@ -69,7 +71,7 @@ def get_valid_shops():
             shopkeeper.long)
         if(distance <= range):
             valid_shopkeepers[shopkeeper.name] = [distance, shopkeeper.id]
-            print(valid_shopkeepers[shopkeeper.name])
+           # print(valid_shopkeepers[shopkeeper.name])
     if not valid_shopkeepers:
         # Found No STORE nearby. Fall back to amazon flex or amazon prime
         # delivery
@@ -77,6 +79,24 @@ def get_valid_shops():
     # valid_shopkeepers = {k: v for k, v in sorted(valid_shopkeepers.items(),
     # key=lambda item: item[1])}             For Sorted Values
     return prime_delivery, valid_shopkeepers
+
+
+def valid_shops_items():
+    prime_delivery = False
+    range = 2
+    valid_shops = []
+    customer_lat = 17.41710876415962
+    customer_long = 78.44529794540337
+    shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
+    for shopkeeper in shopkeeper_dataset.iterator():
+        distance = get_dist(
+            customer_lat,
+            customer_long,
+            shopkeeper.lat,
+            shopkeeper.long)
+        if(distance <= range):
+            valid_shops.append(shopkeeper)
+    return valid_shops
 
 
 def ratings_prepocessor():
@@ -121,7 +141,7 @@ def ratingupdater():
             store_entity_stores_table.total_orders  # Prev Rating
         prev_val += reviews.userrating  # Updated Rating
         new_val = prev_val / (store_entity_stores_table.total_orders + 1)
-        print(round(new_val))
+       # print(round(new_val))
         store_entity_stores_table.rating = new_val
         store_entity_stores_table.total_orders = store_entity_stores_table.total_orders + 1
         store_entity_stores_table.save()
@@ -130,9 +150,31 @@ def ratingupdater():
         # print(reviews.order_id,reviews.userrating)
 
 
-def recommendation_algo():
+def recommendation_algo(plid):
     # IF shop is not in range is ineligble move to prime delivery
     prime, shop_list = get_valid_shops()
+    # 3
+    plid = plid.split(' ')
+    productid = [int(i) for i in plid]
+    result = {}
+    from store.models import StoreItem
+    shopnumber = valid_shops_items()
+    # print(shopnumber)
+    for i in range(0, len(shopnumber)):
+        q = shopnumber[i].id
+        si_query = StoreItem.objects.all().filter(shop=q).values('product', 'status')
+        if(len(si_query) > 0):
+            count = 0
+            for k in range(0, len(si_query)):
+                for j in range(0, len(productid)):
+                    if(si_query[k]['product'] == productid[j]):
+                        if(si_query[k]['status']) == True:
+                            count += 1
+            result[q] = count
+            #print("printinh result:")
+            # print(str(result[q])+"/"+str(len(plid)))
+    print(result)
+    ######################################################
     rated_shopkeepers, upper_shopkeeper, lower_shopkeeper = ratings_prepocessor()
     sucessful_orders, upper_successful_orders, lower_successful_orders = number_of_sucessful_orders()
     if(prime):
@@ -151,16 +193,31 @@ def recommendation_algo():
             5,
             0,
             sucessful_orders[i])
-        val += adder2 * 0.40  # Succesful orders Calculation 40% weightage
+        val += adder2 * 0.20  # Succesful orders Calculation 20% weightage
         val = round(val, 1)
         finalshoplist[i] = [val, j[1]]
-        print(finalshoplist[i])
+
+    ###########################################
+    for k, v in finalshoplist.items():
+        for key, value in result.items():
+            if(v[1] == key):
+                v.append(value)
+                v.append(len(plid))
+                adder3 = value/len(plid)
+                # Total number of orders deliverable 20% weightage and range scaling to 5
+                v[0] += adder3 * 0.20 * 5
+                v[0] = round(v[0], 1)
+            else:
+                pass
+    print(finalshoplist)
+    # print(finalshoplist[i])
     finalshoplist = {
         k: v for k,
         v in sorted(
             finalshoplist.items(),
             key=lambda item: item[1],
             reverse=True)}
+    # print(finalshoplist)
     return finalshoplist
 
     #query = Recommendations(shop=i,score=j)

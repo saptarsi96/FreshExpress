@@ -12,9 +12,9 @@ class OrderItemTabuler(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user', 'store','total_price',
-                    'address', 'pin_code', 'city', 'status', 'paid','rating']
-    list_filter = ['paid','created', 'status']
+    list_display = ['user', 'store', 'total_price',
+                    'address', 'pin_code', 'city', 'status', 'paid', 'rating']
+    list_filter = ['paid', 'created', 'status']
     raw_id_fields = ['user']
     list_editable = ['status', 'paid']
     inlines = [OrderItemTabuler]
@@ -23,17 +23,17 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Recommendations)
 class Recommendations(admin.ModelAdmin):
-   list_display = ['shop','score','accepted','order_time']
+    list_display = ['shop', 'score', 'accepted', 'order_time']
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display=['order','userrating']
+    list_display = ['order', 'userrating']
 
 
 @admin.register(AcceptedOrderItem)
 class AcceptedOrderItemsAdmin(admin.ModelAdmin):
-    list_display=['shop','orderitem']
+    list_display = ['shop', 'orderitem']
 
 
 @admin.register(RejectedOrder)
