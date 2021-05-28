@@ -1,57 +1,73 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Test</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <script type="text/javascript">
-        function codeAddress() {
+{% extends 'base.html' %} {% load thumbnail %} {% block title %} Order no -
+{{order.id}} {% endblock title %} 
+
+{% block javascript %}
+
+<meta http-equiv="refresh" content="45"> <!-- refresh the page every 45 seconds-->
+<script type="text/javascript">
+    function codeAddress() {
+        
+       //get the orderelements from the page
+       var orderelements = document.getElementsByClassName("order");
+    
+       for(var i=0;i<orderelements.length;i++){
             
-           //get the orderelements from the page
-           var orderelements = document.getElementsByClassName("order");
-           
-           for(var i=0;i<orderelements.length;i++){
-                
-                console.log(orderelements[i].id);
-                //get the orderitem elements for the particular order
-                orderelements[i].value ="";
-                var orderitems = document.getElementsByClassName(orderelements[i].id);
-                for( var j=0;j<orderitems.length;j++){
-                    if(orderitems[j].checked == true){
-                        console.log(orderitems[j]);
-                        if(orderelements[i].value !="")
-                        orderelements[i].value += ("_");
-                        orderelements[i].value += (orderitems[j].name);
-                        
-                    }
+            console.log(orderelements[i].id);
+            //get the orderitem elements for the particular order
+            orderelements[i].value ="";
+            var orderitems = document.getElementsByClassName(orderelements[i].id);
+            for( var j=0;j<orderitems.length;j++){
+                if(orderitems[j].checked == true){
+                    console.log(orderitems[j]);
+                    if(orderelements[i].value !="")
+                    orderelements[i].value += ("_");
+                    orderelements[i].value += (orderitems[j].name);
                     
                 }
-           }
-        }
-        window.onload = codeAddress;
-        </script>
-    </head>
-    <body>
-<table border="1">  
-    {{present}}
+                
+            }
+       }
+    }
+    window.onload = codeAddress;
+    </script>
+{% endblock javascript %}
+{% block content %}
+
+<br><br>
+
+{% if page_obj %}
+<table class="table table-striped table-bordered"> 
+    <tr><th><center>Order Items</center></th> <th colspan="2">Decision</th></tr>
 {% for orderid in page_obj %}
 <tr>
       <td>
+          
         {% for item in orderid %}
             <input type="checkbox" name="{{item.id}}" class="order{{item.order__id}}" {%if item.product__id in present %} checked {% endif %} onclick="codeAddress()"> {{item.product__name}} {{item.product__id}} <br>
         {% endfor %}
         <form action="redirectreceivedorders" method="POST"> 
             {% csrf_token %}
-        <input type="text" id="order{{orderid.0.order__id}}" name="orderitems" class="order" value="" hidden>
+        <input type="text" id="order{{orderid.0.order__id}}" name="orderitems" class="order" value="" hidden >
         <input type="text" id="orderid" name="orderid" value="{{orderid.0.order__id}}" hidden>
     </td>
-    <td>
-        <input type="submit" name='Accept' value="Accept"> 
-        <input type="submit" name ='Reject' value="Reject"> 
+    <td colspan="2">
+        <div class="row text-center">
+            <div class="col-md-6"><input type="submit" name='Accept' value="Accept" class="btn btn-success">&nbsp; </div>
+            <div class="col-md-6"><input type="submit" name ='Reject' value="Reject" class="btn btn-danger"> &nbsp;</div>&nbsp;
+        </div>
+        
+        
     </td>
     </form>
 </tr>
 {% endfor %}
 </table>
+{%  else %}
+<br><br>
+<div class="alert alert-info" role="alert">
+    <h3>No orders are currently present for your shop. <br> Sit back and relax, we will notify you once we receive the order!!</h3>
+  </div>
+{% endif %}
 
 <div class="pagination">
     <span class="step-links">
@@ -70,5 +86,6 @@
         {% endif %}
     </span>
 </div>
-</body>
-</html>
+
+
+{% endblock content %}
