@@ -14,4 +14,6 @@ urlpatterns = [
     path('receivedorders', views.ReceivedOrders),
     path('redirectreceivedorders', views.RedirectReceivedOrders),
     path('acceptedorders', views.AcceptedOrders),
+    path('form/',views.support),
+    path('form/submit/',views.help),
 ]
