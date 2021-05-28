@@ -81,7 +81,6 @@ class AcceptedOrderItem(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE)
     orderitem = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
 
-class RejectionReason(models.Model):
-    shop = models.ForeignKey(Store,on_delete=models.CASCADE)
-    reason = models.CharField(max_length=2000)
-    orderid = models.ForeignKey(Order,on_delete=models.CASCADE)
+class RejectedOrder(models.Model):
+    shop = models.ForeignKey(Store, on_delete=models.CASCADE,default=0)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,default=0)

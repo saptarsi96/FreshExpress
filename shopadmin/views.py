@@ -1,6 +1,7 @@
+from django.db.models.query import FlatValuesListIterable
 from django.http.response import HttpResponse
 from django.shortcuts import render
-from orders.models import Order, OrderItem, RejectionReason, AcceptedOrderItem
+from orders.models import Order, OrderItem,AcceptedOrderItem,RejectedOrder
 from store.models import Product
 from .inventoryviews import *
 from django.views.generic.list import ListView
@@ -33,17 +34,22 @@ def ReceivedOrders(request):
     except:
         print("current user does not have any shops, return to the home page")
         return HttpResponseRedirect('/shopadmin')
+    #get the list of the orders which are already worked on 
+    accepted = AcceptedOrderItem.objects.filter(shop=shop).values_list('orderitem__order__id').distinct()
+    rejected = RejectedOrder.objects.filter(shop=shop).values_list('order__id')
     #get the valid orders for the shop
-    allorders = Order.objects.all()
+    allorders = Order.objects.all().exclude(pk__in=accepted).exclude(pk__in=rejected)
     orderlist = []
     #fetcht the items present for the current owner
-    present = [3]
+    present = StoreItem.objects.filter(shop=shop,status=True).values_list('product__id',flat=True)
     for order in allorders:
-        li = OrderItem.objects.filter(order=order).values('product__name', 'id','order__id','product__id')
-        idlist = li.values('id')
-        li = list(li)
-        orderlist.append(li)
-    paginator = Paginator(orderlist, 5)
+        # only fetch the items which are available to the shopkeeper
+        li = OrderItem.objects.filter(order=order,product__id__in=present).values('product__name', 'id','order__id','product__id')
+        if(len(list(li))!=0):
+            idlist = li.values('id')
+            li = list(li)
+            orderlist.append(li)
+    paginator = Paginator(orderlist, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'page_obj':page_obj,'present':present}
@@ -66,6 +72,7 @@ def RedirectReceivedOrders(request):
             orderitems = items.split('_')
             # if no values are accepted return
             if(items ==""):
+                print("empty list")
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             items  = OrderItem.objects.filter(pk__in=orderitems)
             for item in items:
@@ -76,12 +83,10 @@ def RedirectReceivedOrders(request):
             try:
                 orderid = form.cleaned_data['orderid']
                 orderob = Order.objects.get(id=orderid)
-                print(orderob)
-                reason = "Rejcted"
-                r= RejectionReason(orderid= orderob,reason=reason,shop=shop)
+                r= RejectedOrder(order= orderob,shop=shop)
                 r.save()
             except:
-                print("error")
+                print("error while inserting rejecte order")
     else:
         print("form is invalid")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
