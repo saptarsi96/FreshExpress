@@ -1,3 +1,5 @@
+from store.models import StoreItem
+from store.models import Product, Store
 from orders import models as orderdb
 from store import models
 import json
@@ -14,8 +16,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
 # todoAddress conversion to latitude and longitude
 
-from store.models import Product, Store
-from store.models import StoreItem
+
 def get_lat_long(location):
     parameters = {
         "key": "h0rGftGyPqqLqVZE0b0d1nzKnTAxpuMe",
@@ -78,6 +79,7 @@ def get_valid_shops():
     # valid_shopkeepers = {k: v for k, v in sorted(valid_shopkeepers.items(),
     # key=lambda item: item[1])}             For Sorted Values
     return prime_delivery, valid_shopkeepers
+
 
 def valid_shops_items():
     prime_delivery = False
@@ -147,29 +149,30 @@ def ratingupdater():
         #     print(orderdb.Order.objects.all().filter('store'))
         # print(reviews.order_id,reviews.userrating)
 
+
 def recommendation_algo(plid):
     # IF shop is not in range is ineligble move to prime delivery
     prime, shop_list = get_valid_shops()
-    ##############################################3
-    plid=plid.split(' ')
-    productid=[int(i) for i in plid]
-    result={}
+    # 3
+    plid = plid.split(' ')
+    productid = [int(i) for i in plid]
+    result = {}
     from store.models import StoreItem
-    shopnumber=valid_shops_items()
-    #print(shopnumber)
-    for i in range(0,len(shopnumber)):
-        q=shopnumber[i].id
-        si_query=StoreItem.objects.all().filter(shop=q).values('product','status')
-        if(len(si_query)>0):
-            count=0
-            for k in range(0,len(si_query)):
-                for j in range(0,len(productid)):
-                    if(si_query[k]['product']==productid[j]):
-                        if(si_query[k]['status'])==True:
-                            count+=1
-            result[q]=count
+    shopnumber = valid_shops_items()
+    # print(shopnumber)
+    for i in range(0, len(shopnumber)):
+        q = shopnumber[i].id
+        si_query = StoreItem.objects.all().filter(shop=q).values('product', 'status')
+        if(len(si_query) > 0):
+            count = 0
+            for k in range(0, len(si_query)):
+                for j in range(0, len(productid)):
+                    if(si_query[k]['product'] == productid[j]):
+                        if(si_query[k]['status']) == True:
+                            count += 1
+            result[q] = count
             #print("printinh result:")
-            #print(str(result[q])+"/"+str(len(plid)))
+            # print(str(result[q])+"/"+str(len(plid)))
     print(result)
     ######################################################
     rated_shopkeepers, upper_shopkeeper, lower_shopkeeper = ratings_prepocessor()
@@ -193,27 +196,28 @@ def recommendation_algo(plid):
         val += adder2 * 0.20  # Succesful orders Calculation 20% weightage
         val = round(val, 1)
         finalshoplist[i] = [val, j[1]]
-    
+
     ###########################################
-    for k,v in finalshoplist.items():
-        for key,value in result.items():
-            if(v[1]==key):
+    for k, v in finalshoplist.items():
+        for key, value in result.items():
+            if(v[1] == key):
                 v.append(value)
                 v.append(len(plid))
                 adder3 = value/len(plid)
-                v[0] += adder3 * 0.20 * 5          # Total number of orders deliverable 20% weightage and range scaling to 5
-                v[0] = round(v[0],1)
+                # Total number of orders deliverable 20% weightage and range scaling to 5
+                v[0] += adder3 * 0.20 * 5
+                v[0] = round(v[0], 1)
             else:
-                pass    
-    print(finalshoplist)    
-       # print(finalshoplist[i])
+                pass
+    print(finalshoplist)
+    # print(finalshoplist[i])
     finalshoplist = {
         k: v for k,
         v in sorted(
             finalshoplist.items(),
             key=lambda item: item[1],
             reverse=True)}
-    #print(finalshoplist)        
+    # print(finalshoplist)
     return finalshoplist
 
     #query = Recommendations(shop=i,score=j)
