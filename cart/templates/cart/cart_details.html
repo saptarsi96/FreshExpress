@@ -65,8 +65,19 @@
 <div class="text-center">
   <a href="{% url 'cart:clear' %}" class="btn btn-warning">Clear Cart</a>
   {%with plid=productlist%} 
-  <a href="{% url 'orders:recommend' plid %}" class="btn btn-success">Get Shops</a>
+  <a href="{% url 'orders:recommend' plid %}" class="btn btn-success" id="pbar_outerdiv">Get Shops</a>
   {%endwith%}
+
+  <br><br>
+  {% load static %}  
+    <script src="{% static '/js/bar.js' %}" type="text/javascript"></script>
+  <div class="row justify-content-center">
+
+    <div id="pbar_outerdiv1" style="width: 300px; height: 20px; border: 1px solid grey; z-index: 1; position: relative; border-radius: 5px; -moz-border-radius: 5px;">
+      <div id="pbar_innerdiv" style="background-color: lightblue; z-index: 2; height: 100%; width: 0%;"></div>
+      <div id="pbar_innertext" style="z-index: 3; position: absolute; top: 0; left: 0; height: 100%; color: black; font-weight: bold; text-align: center;">0%</div>
+      </div>
+  </div>
 </div>
 {% else %}
 <div class="text-center">
