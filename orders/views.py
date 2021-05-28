@@ -21,7 +21,7 @@ import django
 import requests
 from django.db.models import Max, Min
 from store import models
-
+from time import sleep
 
 class CreateOrder(LoginRequiredMixin, generic.CreateView):
     form_class = OrderForm
@@ -101,6 +101,7 @@ class Recommend(LoginRequiredMixin):
         
         result = recommendation_engine.recommendation_algo(plid)
         print(result)
+        sleep(120)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
 
