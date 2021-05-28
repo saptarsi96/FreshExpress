@@ -8,9 +8,13 @@ import os
 import django
 import requests
 from django.db.models import Max, Min
-
+from orders.models import AcceptedOrderItem
 import store
-
+from orders.forms import OrderForm
+from orders.models import Order,OrderItem
+from django.shortcuts import render, redirect, Http404, HttpResponse
+from cart.cart import Cart
+from django.contrib import messages
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
@@ -63,6 +67,15 @@ def get_valid_shops():
     customer_lat = 17.41710876415962
     customer_long = 78.44529794540337
     shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
+    ##########################################
+    accepted_shoplist=set()
+    accepted_dataset=AcceptedOrderItem.objects.all()
+    #print(accepted_dataset[0].shop_id)
+    for i in accepted_dataset:
+        accepted_shoplist.add(i.shop_id)
+    #print("Accepting Shoplist")    
+    #print(accepted_shoplist)
+    #####################################3
     for shopkeeper in shopkeeper_dataset.iterator():
         distance = get_dist(
             customer_lat,
@@ -70,7 +83,8 @@ def get_valid_shops():
             shopkeeper.lat,
             shopkeeper.long)
         if(distance <= range):
-            valid_shopkeepers[shopkeeper.name] = [distance, shopkeeper.id]
+            if(shopkeeper.id in accepted_shoplist):
+                valid_shopkeepers[shopkeeper.name] = [distance, shopkeeper.id]
            # print(valid_shopkeepers[shopkeeper.name])
     if not valid_shopkeepers:
         # Found No STORE nearby. Fall back to amazon flex or amazon prime
@@ -78,6 +92,8 @@ def get_valid_shops():
         prime_delivery = True
     # valid_shopkeepers = {k: v for k, v in sorted(valid_shopkeepers.items(),
     # key=lambda item: item[1])}             For Sorted Values
+   # print("validshops")
+    #print(valid_shopkeepers)
     return prime_delivery, valid_shopkeepers
 
 
@@ -150,8 +166,34 @@ def ratingupdater():
         # print(reviews.order_id,reviews.userrating)
 
 
-def recommendation_algo(plid):
+def recommendation_algo(plid, request):
+    # Create the order and orderitems for the 
+    
+    cart = Cart(request)
+    #print(cart)
+    if len(cart) == 0:
+        return redirect('cart:cart_details')
+    order = Order(city="Kolkata",pin_code="700153",address="Sappy Addr")
+    #print("printing order id:")
+    #print(order.id)
+    order.user = request.user
+    store = Store.objects.get(name='Admin',merchant__user__username='admin')
+    order.store = store
+    order.total_price = cart.get_total_price()
+    order.save()
+    #########################################
+    order_id_cart=order.id
+    products = Product.objects.filter(id__in=cart.cart.keys())
+    orderitems = []
+    for i in products:
+        q = cart.cart[str(i.id)]['quantity']
+        orderitems.append(
+            OrderItem(order=order, product=i, quantity=q, total=q*i.price))
+    OrderItem.objects.bulk_create(orderitems)
+    #cart.clear()
+    messages.success(request, 'Your order is successfully placed.')
     # IF shop is not in range is ineligble move to prime delivery
+    #print("coming here")
     prime, shop_list = get_valid_shops()
     # 3
     plid = plid.split(' ')
@@ -171,9 +213,7 @@ def recommendation_algo(plid):
                         if(si_query[k]['status']) == True:
                             count += 1
             result[q] = count
-            #print("printinh result:")
-            # print(str(result[q])+"/"+str(len(plid)))
-    print(result)
+    #print(result)
     ######################################################
     rated_shopkeepers, upper_shopkeeper, lower_shopkeeper = ratings_prepocessor()
     sucessful_orders, upper_successful_orders, lower_successful_orders = number_of_sucessful_orders()
@@ -203,6 +243,7 @@ def recommendation_algo(plid):
             if(v[1] == key):
                 v.append(value)
                 v.append(len(plid))
+                v.append(order_id_cart)
                 adder3 = value/len(plid)
                 # Total number of orders deliverable 20% weightage and range scaling to 5
                 v[0] += adder3 * 0.20 * 5
@@ -217,8 +258,5 @@ def recommendation_algo(plid):
             finalshoplist.items(),
             key=lambda item: item[1],
             reverse=True)}
-    # print(finalshoplist)
+    #print(finalshoplist)
     return finalshoplist
-
-    #query = Recommendations(shop=i,score=j)
-    # query.save()

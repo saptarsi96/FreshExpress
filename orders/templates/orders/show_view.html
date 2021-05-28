@@ -33,12 +33,15 @@
          {%endif%}
          </div>
 
-         {%with ravi=j.1%}
+         
          <div style="margin:auto">
-          
-            <a href="{% url 'orders:place' ravi%}" class="btn btn-success">Checkout</a>
+          {%with sid=j.1%}
+          {%with oid=j.4%}
+            <a href="{% url 'orders:place' sid oid %}" class="btn btn-success">Checkout</a>
+            {%endwith%}
+            {%endwith%}
           </div>
-          {%endwith%}
+    
 
         
         </div>

@@ -8,8 +8,7 @@
 
 30th MAY 2021
 
-<div style="text-align: right">
-
+ <div class=text-justify>
 # Introduction & Background
 
 After the immense success of [<u>Flex</u>](https://flex.amazon.in/) &
