@@ -33,3 +33,6 @@ class RemoveItemForm(forms.Form):
 class OrderItemForm(forms.Form):
     orderitems = forms.CharField(required=False)
     orderid = forms.CharField(required=False)
+
+class DeliveredForm(forms.Form):
+    order = forms.CharField()

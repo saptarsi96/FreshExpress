@@ -13,4 +13,5 @@ urlpatterns = [
     path('redirectremoveitem', views.redirectremoveitems),
     path('receivedorders', views.ReceivedOrders),
     path('redirectreceivedorders', views.RedirectReceivedOrders),
+    path('acceptedorders', views.AcceptedOrders),
 ]
