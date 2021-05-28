@@ -1,6 +1,230 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% load thumbnail %}
 {%block title %}Store{% endblock title %}
 {%block content %}
+<style>
+  .allUsersList{
+  width: 300px;
+  margin: 20px;
+}
+.allUsersList .card-header{
+  background: #683db8;
+  color: #FFF;
+  padding: 10px;
+}
+.allUsersList .image img{
+  border-radius: 16px;
+}
+.usersChatList{
+  position: absolute;
+  width: 250px;
+  bottom: 0;
+  margin-bottom: 0;
+  right: 360px;
+}
+.show{
+  display: block;
+}
+.thumb-user-list{
+  display: none;
+}
+.thumb-user-list .image img{
+  border-radius: 30px;
+}
+.usersChatList .card-header{
+  background: #683db8;
+  font-size: 13px;
+}
+.chatBox{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  margin: 40px;
+  margin-bottom: 0;
+  font-size: 13px;
+}
+.chat-content{
+  overflow: auto;
+  height: 300px;
+}
+.chatBox .card{
+  border-radius: 4px;
+}
+.chatBox .card-header{
+  background: #683db8;
+}
+.header-title{
+  height: 50px;
+}
+.card-header-title i{
+  font-size: 10px;
+  color: #32e4cd;
+  margin-right: 6px;
+}
+.card-header .card-header-title{
+  color: #FFF;
+}
+.chat-content small{
+  margin: 0;
+}
+.chat-content p{
+  background: #ecf1f8;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+.my-content .media-content{
+  width: 80%;
+}
+.my-content .message{
+  float: right;
+  background: #683db8;
+  color: #FFF;
+  text-align: right;
+  padding: 10px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+.my-content .chat-content small{
+  float: right;
+}
+.my-content small{
+  display: block;
+  float: right;
+  width: 100%;
+  text-align: right;
+}
+.chat-textarea{
+  font-size: 14px;
+  padding: 8px;
+  height: 40px;
+  width: 100%;
+  border: none;
+  overflow: auto;
+  outline: none;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
+.chat-message-group .chat-thumb{
+  float: left;
+  width: 20%;
+}
+.chat-message-group .chat-messages{
+  float: left;
+  width: 80%;
+  margin-bottom: 20px;
+}
+.chat-message-group .message{
+  float: left;
+  padding: 10px;
+  background: #ecf1f8;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+.chat-messages .from{
+  float: left;
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 11px;
+}
+.chat-thumb img{
+  border-radius: 40px;
+}
+.writer-user .chat-messages{
+  float: right;
+  width: 100%;
+}
+.writer-user .chat-messages .message{
+  float: right;
+  background: #683db8;
+  color: #FFF;
+}
+.writer-user .chat-messages .from{
+  float: left;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+.chat-message-group .typing{
+  float: left;
+}
+.chatBox .card-header-icon i{
+  color: #FFF;
+  font-size: 13px;
+}
+/* CSSS */
+.outside-box{
+  height: 100px;
+  background: #F8C;
+  width: 200px;
+  margin: 20px;
+  overflow: auto;
+}
+.outside-box .content-insider{
+  height: 300px;
+  background: #C9C;
+}
+/* CSS Spinner */
+.spinner {
+  margin: 0 30px;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 4px;
+  height: 4px;
+  background-color: #888;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+/* EmojiBox */
+.emojiBox{
+  width: 150px;
+  margin: 30px;
+}
+.emojiBox .box{
+  height: 100px;
+  padding: 4px;
+}
+/* */
+.card-header-title img{
+  border-radius: 40px;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   // window.onload = getLocation();
@@ -12,20 +236,40 @@
       console.log(latitude);
       console.log(longitude);
     })};
-  // showPosition();
-  // $(window).on('load', function () {
-  //   console.log(latitude);
-  //   console.log(longitude);
-  //   $.ajax({
-  //      type : 'POST',
-  //      url : 'user/location',
-  //      data : {
-  //          lat : latitude,
-  //          long : longitude,
-  //          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-  //         },
-  //       });
-  // })};
+    var app = new Vue({
+  el: '#chatApp',
+  methods: {
+    showUsuario: function(id){
+      console.log(id);
+    },
+    expandTextArea: function(){
+      $('#chatBox-textbox').height(80);
+      $('#chatTextarea').height(60);
+    },
+    dexpandTetArea: function(){
+      $('#chatBox-textbox').height(60);
+      $('#chatTextarea').height(40);
+    },
+    toggleChat: function(){
+      if(this.chatBoxArea){
+        $('#chatbox-area').hide();
+      }else{
+        $('#chatbox-area').show();
+      }
+      this.chatBoxArea = !this.chatBoxArea;
+    },
+    openChatBox: function(info){
+      
+    },
+    startChat: function(user){
+      
+    },
+    expandChatList: function(){    $("#userListBox").slideToggle();
+      this.showChatList = !this.showChatList;
+      
+    }
+  }
+})
 </script>
 <div class="row mt-3">
   <div class="col-lg-3 col-md-6 col-12 mb-3">
@@ -100,6 +344,110 @@
     </nav>
     {% endif %}
   </div>
+  <div id="chatApp">
+    <div class="usersChatList">
+      <div class="card">
+        <div id="userListBox" class="card-content thumb-user-list" :class="{show: showChatList}">
+          <article class="media" @click="showUsuario('123')">
+            <figure class="media-right">
+              <p class="image is-32x32">
+                <img src="http://bulma.io/images/placeholders/32x32.png">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Barbara Middleton</strong>
+                  <br>
+                </p>
+              </div>
+            </div>
+          </article>
+          <article class="media">
+            <figure class="media-left">
+              <p class="image is-32x32">
+                <img src="http://bulma.io/images/placeholders/32x32.png">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Jonathan Cales</strong>
+                  <br>
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="chatBox" id="chatBox">
+      <div class="card">
+     
+     <header class="card-header header-title" @click="toggleChat()">
+        <p class="card-header-title">
+          <i class="fa fa-circle is-online"></i><img src="https://k0.okccdn.com/php/load_okc_image.php/images/32x0/971x939/0/10846088441021659030.webp?v=2" style="width: 30px;">jarvissupport
+        </p>
+        <a class="card-header-icon">
+          <span class="icon">
+            <i class="fa fa-close"></i>
+          </span>
+        </a>
+      </header>
+     
+     <div id="chatbox-area">
+      <div class="card-content chat-content">
+        <div class="content">
+          <div class="chat-message-group">
+            <div class="chat-thumb">
+              <figure class="image is-32x32">
+                <img src="https://k0.okccdn.com/php/load_okc_image.php/images/32x0/971x939/0/10846088441021659030.webp?v=2">
+              </figure>
+            </div>
+            <div class="chat-messages">
+              <div class="message">hey how can we help you</div>
+              <div class="from">jarvis 04:55</div>
+            </div>
+          </div>
+          <div class="chat-message-group writer-user">
+            <div class="chat-messages">
+              <div class="message">please update my email-id</div>
+              <div class="from">USER 04:55</div>
+            </div>
+          </div>
+          <div class="chat-message-group">
+            <div class="typing">Typing</div>
+            <div class="spinner">
+                  <div class="bounce1"></div>
+                  <div class="bounce2"></div>
+                  <div class="bounce3"></div>
+                  <div class="bounce3"></div>
+    
+             </div>
+          </div>
+        </div>
+      </div>
+      <footer class="card-footer" id="chatBox-textbox">
+        <div style="width: 63%">
+          <textarea id="chatTextarea" class="chat-textarea" placeholder="Type your message" v-on:focus="expandTextArea()" v-on:blur="dexpandTetArea()"></textarea>
+        </div>
+        <div class="has-text-centered" style="width: 37%">
+          <a class="button is-white">
+            <i class="fa fa-smile-o fa-5" aria-hidden="true"></i>
+          </a>
+        <a class="button is-white">send</a></div>
+      </footer>
+      </div>
+    </div>
+    </div>
+    <div class="emojiBox" style="display: none">
+      <div class="box">
+      
+      </div>
+    </div>
+    
+    </div>
+    
 </div>
 <script>
   document.querySelector("#div_id_price > div").className = "d-flex justify-space-between align-items-center";
