@@ -2,7 +2,7 @@ from django.urls import path
 from orders import views
 app_name = 'orders'
 urlpatterns = [
-    path('place', views.CreateOrder.as_view(), name='place'),
+    path('place/<int:sid>/<int:oid>', views.CreateOrder.as_view(), name='place'),
     path('recommend/<str:plid>',
          views.Recommend.recommendation_algo, name='recommend'),
     path('my', views.MyOrders.as_view(), name='my'),
