@@ -8,9 +8,12 @@ import os
 import django
 import requests
 from django.db.models import Max, Min
-
 import store
-
+from orders.forms import OrderForm
+from orders.models import Order,OrderItem
+from django.shortcuts import render, redirect, Http404, HttpResponse
+from cart.cart import Cart
+from django.contrib import messages
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
@@ -150,8 +153,30 @@ def ratingupdater():
         # print(reviews.order_id,reviews.userrating)
 
 
-def recommendation_algo(plid):
+def recommendation_algo(plid, request):
+    # Create the order and orderitems for the 
+    
+    cart = Cart(request)
+    print(cart)
+    if len(cart) == 0:
+        return redirect('cart:cart_details')
+    order = Order(city="Kolkata",pin_code="700153",address="Sappy Addr")
+    order.user = request.user
+    store = Store.objects.get(name='Admin',merchant__user__username='admin')
+    order.store = store
+    order.total_price = cart.get_total_price()
+    order.save()
+    products = Product.objects.filter(id__in=cart.cart.keys())
+    orderitems = []
+    for i in products:
+        q = cart.cart[str(i.id)]['quantity']
+        orderitems.append(
+            OrderItem(order=order, product=i, quantity=q, total=q*i.price))
+    OrderItem.objects.bulk_create(orderitems)
+    #cart.clear()
+    messages.success(request, 'Your order is successfully placed.')
     # IF shop is not in range is ineligble move to prime delivery
+    print("coming here")
     prime, shop_list = get_valid_shops()
     # 3
     plid = plid.split(' ')
@@ -171,8 +196,6 @@ def recommendation_algo(plid):
                         if(si_query[k]['status']) == True:
                             count += 1
             result[q] = count
-            #print("printinh result:")
-            # print(str(result[q])+"/"+str(len(plid)))
     print(result)
     ######################################################
     rated_shopkeepers, upper_shopkeeper, lower_shopkeeper = ratings_prepocessor()
@@ -217,8 +240,5 @@ def recommendation_algo(plid):
             finalshoplist.items(),
             key=lambda item: item[1],
             reverse=True)}
-    # print(finalshoplist)
+    #print(finalshoplist)
     return finalshoplist
-
-    #query = Recommendations(shop=i,score=j)
-    # query.save()
