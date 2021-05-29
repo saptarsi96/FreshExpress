@@ -171,21 +171,24 @@ def recommendation_algo(plid, request):
     # Create the order and orderitems for the 
     
     cart = Cart(request)
-    #print(cart)
+    print(vars(cart))
     if len(cart) == 0:
         return redirect('cart:cart_details')
-    order = Order(city="Kolkata",pin_code="700153",address="Sappy Addr")
-    #print("printing order id:")
-    #print(order.id)
-    order.user = request.user
-    store = Store.objects.get(name='Admin',merchant__user__username='admin')
-    order.store = store
-    order.total_price = cart.get_total_price()
-    order.status = "Requested"
-    order.save()
-    
-    #########################################
-    order_id_cart=order.id
+    if(cart.getorder()=="NULL"):
+        order = Order(city="Kolkata",pin_code="700153",address="Sappy Addr")
+        #print("printing order id:")
+        #print(order.id)
+        order.user = request.user
+        store = Store.objects.get(name='Admin',merchant__user__username='admin')
+        order.store = store
+        order.total_price = cart.get_total_price()
+        order.status = "Requested"
+        order.save()
+        order_id_cart=order.id
+        cart.addorder(order.id)
+    else:
+        order_id_cart=cart.getorder()
+        order=Order.objects.get(id=order_id_cart)    
     products = Product.objects.filter(id__in=cart.cart.keys())
     orderitems = []
     for i in products:
