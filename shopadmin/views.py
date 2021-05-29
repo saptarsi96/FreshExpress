@@ -49,7 +49,7 @@ def AcceptedOrders(request):
     else:
         print("form is invalid")
 
-    orders = Order.objects.filter(store=shop,status="Accepted")
+    orders = Order.objects.filter(store=shop,status="Pending")
     print(orders)
     allorderslist = []
     for order in orders:
