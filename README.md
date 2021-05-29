@@ -303,25 +303,25 @@ NAME\] in its absolute discretion.
 # Active Issues
 
 1.  Heroku application deployment times out at
-    > **[<u>30secs.</u>](https://devcenter.heroku.com/articles/request-timeout)**
-    > In local deployment the timeout can be fixed to **2-5 minutes**
-    > which is the practical time for a shopkeeper to accept an order in
-    > an ideal scenario.The range can be made flexible accordingly.
-    > **Possible Resolutions** : Moving the application to
-    > [<u>AWS</u>](https://aws.amazon.com/blogs/aws/elb-idle-timeout-control/#:~:text=In%20order%20to%20better%20support,through%20the%20AWS%20Management%20Console.)
-    > where the timeout can be maintained in a range of 1-3600 secs
-    > which is practical for our intended scenarios.
+     **[<u>30secs.</u>](https://devcenter.heroku.com/articles/request-timeout)**
+     In local deployment the timeout can be fixed to **2-5 minutes**
+     which is the practical time for a shopkeeper to accept an order in
+     an ideal scenario.The range can be made flexible accordingly.
+     **Possible Resolutions** : Moving the application to
+     [<u>AWS</u>](https://aws.amazon.com/blogs/aws/elb-idle-timeout-control/#:~:text=In%20order%20to%20better%20support,through%20the%20AWS%20Management%20Console.)
+     where the timeout can be maintained in a range of 1-3600 secs
+     which is practical for our intended scenarios.
 
 2.  “Get your location” button in the homepage is not working . The
-    > button takes user location through HTML Geolocation API and prints
-    > in the console. For our test scenario we have defined an ideal
-    > region in the [<u>map</u>](https://goo.gl/maps/7RMfRBFCAozMq93a9)
-    > with 12 nearby shops. **Possible Resolutions :** Once the
-    > prototype is successfully implemented and business data is
-    > collected this model can be extended and implemented to every
-    > location in any region in India. The user location will then be
-    > stored into a database for further processing by the
-    > recommendation engine.
+     button takes user location through HTML Geolocation API and prints
+     in the console. For our test scenario we have defined an ideal
+     region in the [<u>map</u>](https://goo.gl/maps/7RMfRBFCAozMq93a9)
+     with 12 nearby shops. **Possible Resolutions :** Once the
+     prototype is successfully implemented and business data is
+     collected this model can be extended and implemented to every
+     location in any region in India. The user location will then be
+     stored into a database for further processing by the
+     recommendation engine.
 
 # 
 
@@ -330,9 +330,9 @@ NAME\] in its absolute discretion.
 1.  Drone Based Delivery Subsystem using Amazon Air.
 
 2.  Use of the existing transportation systems to facilitate faster
-    > deliveries.
+    deliveries.
 
 3.  Amazon Pay payment integration for faster checkouts and payment
-    > processing.
+    processing.
 
 4.  Amazon Flex integration with the existing application.
