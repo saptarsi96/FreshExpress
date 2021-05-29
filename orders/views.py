@@ -54,7 +54,7 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
                 OrderItem(order=order, product=i, quantity=q, total=q*i.price))
         OrderItem.objects.bulk_create(orderitems)
         cart.clear()
-        messages.success(self.request, 'Your order is successfully placed.')
+        messages.success(self.request, 'Your order is successfully forwarded to FreshExpress Store .')
        # os.system('python3 recommendation_engine.py')
         return redirect('store:product_list')
 
@@ -111,7 +111,12 @@ class OrderRating(LoginRequiredMixin, generic.DetailView):
         if form.is_valid():
             object = form.save(commit=False)
             object.order = order
-            object.save()
+            try:
+                ob2=Review.objects.filter(order=order)[0]
+                ob2.userrating=object.userrating
+                ob2.save()
+            except:    
+                object.save()
             result = recommendation_engine.ratingupdater()
             print("inside views:" + str(result))
         else:
