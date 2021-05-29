@@ -77,8 +77,3 @@ class StoreItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
-
-class UserGeoLocation(models.Model):
-    user = models.OneToOneField(User, on_delete=CASCADE)
-    latitude = models.FloatField(blank=False, null=False)
-    longitude = models.FloatField(blank=False, null=False)
