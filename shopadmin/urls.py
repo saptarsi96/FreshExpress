@@ -1,3 +1,4 @@
+from os import name
 from shopadmin.inventoryviews import redirectremoveitems
 from django.urls import path
 from . import views
@@ -5,15 +6,15 @@ from . import views
 app_name = 'shopadmin'
 urlpatterns = [
     path('', views.index),
-    path('store', views.storehome),
-    path('inventory/<int:storeid>', views.inventoryhome),
-    path('redirectstore', views.redirecthome),
-    path('redirectinventory', views.redirectinventory),
-    path('redirectadditem', views.redirectadditems),
-    path('redirectremoveitem', views.redirectremoveitems),
-    path('receivedorders', views.ReceivedOrders),
-    path('redirectreceivedorders', views.RedirectReceivedOrders),
-    path('acceptedorders', views.AcceptedOrders),
+    path('store', views.storehome,name='store'),
+    path('inventory', views.inventoryhome,name='inventory'),
+    path('redirectstore', views.redirecthome,name='redirectstore'),
+    path('redirectinventory', views.redirectinventory,name='redirectinventory'),
+    path('redirectadditem', views.redirectadditems,name='redirectadditem'),
+    path('redirectremoveitem', views.redirectremoveitems,name='redirectremoveitem'),
+    path('receivedorders', views.ReceivedOrders,name='receivedorders'),
+    path('redirectreceivedorders', views.RedirectReceivedOrders,name='redirectreceivedorders'),
+    path('acceptedorders', views.AcceptedOrders,name='acceptedorders'),
     path('form/',views.support),
     path('form/submit/',views.help),
 ]

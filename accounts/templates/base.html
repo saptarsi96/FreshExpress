@@ -89,6 +89,12 @@
                 <a href="{% url 'password_change'%}" class="dropdown-item">
                   Change Password
                 </a>
+                {% load merchant_tag %}
+                {% if request.user|ismerchant %}
+                <a href="{% url 'shopadmin:receivedorders'%}" class="dropdown-item">Received Orders</a>
+                <a href="{% url 'shopadmin:acceptedorders'%}" class="dropdown-item">Accepted Orders</a>
+                <a href="{% url 'shopadmin:inventory'%}" class="dropdown-item">Inventory</a>
+                {% endif %}
                 <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
               </div>
             </li>

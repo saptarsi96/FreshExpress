@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from .inventoryforms import StoreForm, StatusForm, StoreItemForm
 from django.http import HttpResponseRedirect
-
+from django.core.paginator import Paginator
 
 @login_required
 def storehome(request):  # to add or remove the stores
@@ -38,16 +38,19 @@ def redirecthome(request):  # to add or remove the stores
 
 
 @login_required
-def inventoryhome(request, storeid):  # to add or remove the items from the store
-    shop = []
+def inventoryhome(request):  # to add or remove the items from the store
     try:
-        shop = Store.objects.get(id=storeid, merchant__user=request.user)
+        shop = Store.objects.filter(merchant__user=request.user)[0]
     except:
-        return HttpResponseRedirect("../store")
+        print("current user does not have any shops, return to the home page")
+        return HttpResponseRedirect('/shopadmin')
     items = StoreItem.objects.filter(shop=shop)
     form = StoreItemForm(initial={'shop': shop})
-    context = {'items': items, 'form': form}
-    return render(request, 'allitems.html', context)
+    paginator = Paginator(items, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj, 'form': form}
+    return render(request, 'inventory.html', context)
 
 
 @login_required

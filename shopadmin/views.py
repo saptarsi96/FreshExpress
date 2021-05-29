@@ -33,6 +33,7 @@ class OrdersList(ListView):
 def AcceptedOrders(request):
     try:
         shop = Store.objects.filter(merchant__user=request.user)[0]
+        merchant = True
     except:
         print("current user does not have any shops, return to the home page")
         return HttpResponseRedirect('/shopadmin')
@@ -62,7 +63,7 @@ def AcceptedOrders(request):
     paginator = Paginator(allorderslist, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj':page_obj}
+    context = {'page_obj':page_obj,'merchant':merchant}
     return render(request, 'current_orders.html', context)
 
 
