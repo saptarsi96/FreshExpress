@@ -186,17 +186,17 @@ def recommendation_algo(plid, request):
         order.save()
         order_id_cart=order.id
         cart.addorder(order.id)
+        products = Product.objects.filter(id__in=cart.cart.keys())
+        orderitems = []
+        for i in products:
+            q = cart.cart[str(i.id)]['quantity']
+            orderitems.append(
+            OrderItem(order=order, product=i, quantity=q, total=q*i.price))
+        OrderItem.objects.bulk_create(orderitems)
     else:
         order_id_cart=cart.getorder()
         order=Order.objects.get(id=order_id_cart)    
-    products = Product.objects.filter(id__in=cart.cart.keys())
-    orderitems = []
-    for i in products:
-        q = cart.cart[str(i.id)]['quantity']
-        orderitems.append(
-            OrderItem(order=order, product=i, quantity=q, total=q*i.price))
-    OrderItem.objects.bulk_create(orderitems)
-    print("Order is created")
+    #print("Order is created")
     sleep(15)
     #cart.clear()
     # IF shop is not in range is ineligble move to prime delivery
