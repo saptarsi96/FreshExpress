@@ -10,7 +10,6 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ['address', 'city', 'pin_code']
 
-
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
