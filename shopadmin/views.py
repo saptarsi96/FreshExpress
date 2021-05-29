@@ -78,7 +78,8 @@ def ReceivedOrders(request):
     accepted = AcceptedOrderItem.objects.filter(shop=shop).values_list('orderitem__order__id').distinct()
     rejected = RejectedOrder.objects.filter(shop=shop).values_list('order__id')
     #get the valid orders for the shop
-    allorders = Order.objects.filter(status="Pending").exclude(pk__in=accepted).exclude(pk__in=rejected)
+    allorders = Order.objects.filter(status="Requested").exclude(pk__in=accepted).exclude(pk__in=rejected)
+    print(allorders)
     orderlist = []
     #fetcht the items present for the current owner
     present = StoreItem.objects.filter(shop=shop,status=True).values_list('product__id',flat=True)
@@ -132,6 +133,7 @@ def RedirectReceivedOrders(request):
 
 def support(request):
     return render(request,'support.html')
+
 def send(username,email,queries):
     email_id="guptahimanshu2035@gmail.com"
     password="ajyfgrezutgkypdd"
@@ -153,6 +155,7 @@ def send(username,email,queries):
         return 1
     except KeyError:
         return 0
+
 def help(request):
     if request.method == 'POST':
         username=request.POST.get('username')

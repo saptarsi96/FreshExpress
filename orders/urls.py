@@ -1,3 +1,4 @@
+from orders.forms import OrderUpdateForm
 from django.urls import path
 from orders import views
 app_name = 'orders'
@@ -9,4 +10,5 @@ urlpatterns = [
     path('details/<int:pk>/', views.OrderDetails.as_view(), name='details'),
     path('invoice/<int:pk>/', views.OrderInvoice.as_view(), name='invoice'),
     path('rating/<int:pk>', views.OrderRating.add_review, name='rating'),
+    path('redirectupdateorder',views.UpdateOrder)
 ]

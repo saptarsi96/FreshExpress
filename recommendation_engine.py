@@ -15,6 +15,7 @@ from orders.models import Order,OrderItem
 from django.shortcuts import render, redirect, Http404, HttpResponse
 from cart.cart import Cart
 from django.contrib import messages
+from time import sleep
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
@@ -60,7 +61,7 @@ c, d = get_lat_long("BE-21 Newtown Action Area 1B, Kolkata 700156")
 
 
 # Finding valid list of shops according to given range defined.
-def get_valid_shops():
+def get_valid_shops(order_id_cart):
     prime_delivery = False
     range = 2
     valid_shopkeepers = {}
@@ -69,7 +70,7 @@ def get_valid_shops():
     shopkeeper_dataset = models.Store.objects.all().filter(shop_status='Open')
     ##########################################
     accepted_shoplist=set()
-    accepted_dataset=AcceptedOrderItem.objects.all()
+    accepted_dataset=AcceptedOrderItem.objects.all().filter(orderitem__order__id=order_id_cart)
     #print(accepted_dataset[0].shop_id)
     for i in accepted_dataset:
         accepted_shoplist.add(i.shop_id)
@@ -180,7 +181,9 @@ def recommendation_algo(plid, request):
     store = Store.objects.get(name='Admin',merchant__user__username='admin')
     order.store = store
     order.total_price = cart.get_total_price()
+    order.status = "Requested"
     order.save()
+    
     #########################################
     order_id_cart=order.id
     products = Product.objects.filter(id__in=cart.cart.keys())
@@ -190,11 +193,12 @@ def recommendation_algo(plid, request):
         orderitems.append(
             OrderItem(order=order, product=i, quantity=q, total=q*i.price))
     OrderItem.objects.bulk_create(orderitems)
+    print("Order is created")
+    sleep(15)
     #cart.clear()
-    messages.success(request, 'Your order is successfully placed.')
     # IF shop is not in range is ineligble move to prime delivery
     #print("coming here")
-    prime, shop_list = get_valid_shops()
+    prime, shop_list = get_valid_shops(order_id_cart)
     # 3
     plid = plid.split(' ')
     productid = [int(i) for i in plid]
