@@ -379,7 +379,7 @@ This procedure is run multiple times without fail guaranteeing
 uninterrupted services to the customer by the shopkeepers and solving
 the “Last-Mile” problem for Amazon.
 
-<img src="media/image12.png" style="width:6.5in;height:4.02778in" />
+<img src="https://github.com/saptarsi96/FreshExpress/blob/main/readme-media/1.png" style="width:6.5in;height:4.02778in" />
 
 Example Scenario Sample Map
 
