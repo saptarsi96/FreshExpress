@@ -101,7 +101,7 @@ class Recommend(LoginRequiredMixin):
 
         result = recommendation_engine.recommendation_algo(plid, request)
         print(result)
-        #sleep(30)
+        sleep(25)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
 
