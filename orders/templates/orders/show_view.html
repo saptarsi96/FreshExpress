@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block javascript %}
+
+{% endblock %}
 {% block content %}
 
   <div class="container">
@@ -17,7 +20,7 @@
 
 
          <div style="margin:auto">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-x  awesome/4.7.0/css/font-awesome.min.css">
           <style>
             .checked {
             color: orange;
@@ -38,8 +41,14 @@
           {%with sid=j.1%}
           {%with oid=j.4%}
             <a href="{% url 'orders:place' sid oid %}" class="btn btn-success">Checkout</a>
-            {%endwith%}
-            {%endwith%}
+            <form action="../redirectupdateorder" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="oid" value="{{oid}}">
+              <input type="hidden" name="sid" value="{{sid}}">
+              <input type="submit" value="Checkout" class="btn btn-success">
+            </form>  
+          {%endwith%}
+          {%endwith%}
           </div>
     
 

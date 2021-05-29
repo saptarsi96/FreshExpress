@@ -9,6 +9,7 @@ from django.db.models.deletion import CASCADE
 # Create your models here.
 
 choices = (
+    ('Requested', 'Requested'),
     ('Pending', 'Pending'),
     ('Accepted', 'Accepted'),
     ('Packed', 'Packed'),

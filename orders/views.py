@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from orders.forms import OrderForm, ReviewForm
+from orders.forms import OrderForm, ReviewForm,OrderUpdateForm
 from orders.models import Order, OrderItem, Review
 from cart.cart import Cart
 from django.db.models import Count
@@ -98,11 +98,9 @@ class OrderInvoice(LoginRequiredMixin, generic.DetailView):
 class Recommend(LoginRequiredMixin):
     def recommendation_algo(request, **kwargs):
         plid = kwargs['plid']
-
         result = recommendation_engine.recommendation_algo(plid, request)
-        print(result)
-        sleep(20)
-        return render(request, 'orders/show_view.html', context={'result': result})
+        form = OrderUpdateForm()
+        return render(request, 'orders/show_view.html', context={'result': result,'form':form})
        # print(output)
 
 
@@ -119,3 +117,24 @@ class OrderRating(LoginRequiredMixin, generic.DetailView):
         else:
             print(form)
         return render(request, 'orders/order_list.html', {'order': order, 'form': form})
+
+
+def UpdateOrder(request):
+    form = OrderUpdateForm(request.POST)
+    if form.is_valid():
+        try:
+            order = Order.objects.get(id=form.cleaned_data['oid'])
+            shop = Store.objects.get(id=form.cleaned_data['sid'])
+            order.store = shop
+            order.status = "Pending"
+            order.save()
+            print("Store object updated successfully")
+            messages.success(request, 'Your order is successfully placed.')
+            cart = Cart(request)
+            cart.clear()
+        except:
+            print("Error while updating the store..check logs")
+    else:
+        print("form is invalid")
+    return redirect('store:product_list')
+    
