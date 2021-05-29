@@ -36,13 +36,13 @@ class CreateOrder(LoginRequiredMixin, generic.CreateView):
         context['summary'] = cart_items
         return context
 
-    def form_valid(self, form, **kwargs):
+    def form_valid(self, form):
         cart = Cart(self.request)
         if len(cart) == 0:
             return redirect('cart:cart_details')
         order = form.save(commit=False)
         order.user = self.request.user
-        store = Store.objects.get(id=self.kwargs['sid'])
+        store = Store.objects.get(id=660453821292455697)
         order.store = store
         order.total_price = cart.get_total_price()
         order.save()
@@ -99,9 +99,9 @@ class Recommend(LoginRequiredMixin):
     def recommendation_algo(request, **kwargs):
         plid = kwargs['plid']
 
-        result = recommendation_engine.recommendation_algo(plid)
+        result = recommendation_engine.recommendation_algo(plid, request)
         print(result)
-        #sleep(120)
+        sleep(120)
         return render(request, 'orders/show_view.html', context={'result': result})
        # print(output)
 

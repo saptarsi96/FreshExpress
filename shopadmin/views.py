@@ -8,6 +8,7 @@ from django.views.generic.list import ListView
 from django.core.paginator import Paginator
 from django.forms import formset_factory
 from .inventoryforms import OrderItemForm,DeliveredForm
+import smtplib, ssl
 # Create your views here.
 
 
@@ -128,3 +129,37 @@ def RedirectReceivedOrders(request):
     else:
         print("form is invalid")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def support(request):
+    return render(request,'support.html')
+def send(username,email,queries):
+    email_id="guptahimanshu2035@gmail.com"
+    password="ajyfgrezutgkypdd"
+    try:
+        subject ="""\
+        Support FreshEXpress
+        """
+        text="""\
+        Hello {0},
+        we have received your query regarding"{1}".Our Agent  will contact you soon 
+        Thankyou
+        Stay safe and stay connected """.format(username,queries)
+        conn=smtplib.SMTP('imap.gmail.com',587)
+        conn.ehlo()
+        conn.starttls()
+        conn.login(email_id,password)
+        message = 'Subject: {}\n\n{}'.format(subject, text)
+        conn.sendmail(email_id,email,message)
+        return 1
+    except KeyError:
+        return 0
+def help(request):
+    if request.method == 'POST':
+        username=request.POST.get('username')
+        email=request.POST.get('email')
+        queries=request.POST.get('queries')
+        result=send(username,email,queries)
+        if result==1:
+            return HttpResponse("Mail is sent") 
+        else:
+            return HttpResponse("Mail is not sent") 
