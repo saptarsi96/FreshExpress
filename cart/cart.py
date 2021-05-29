@@ -2,9 +2,24 @@ class Cart:
     def __init__(self, request):
         self.session = request.session
         cart = request.session.get('cart')
+        order=request.session.get('order')
         if(not cart):
-            cart = self.session['cart'] = {}
+            cart = self.session['cart']={}
         self.cart = cart
+        if(not order):
+            order=self.session['order']={'order':"NULL"}
+        self.order=order
+
+    def addorder(self,orderid):
+        self.order['order']=orderid
+        self.save()
+
+    def getorder(self):
+        return self.order['order']
+
+    def removeorder(self):
+        self.order['order']="NULL"
+        self.save()
 
     def add(self, productid, price, quantity=1):
         if(quantity == 0):
@@ -12,11 +27,13 @@ class Cart:
             return
         self.cart[productid] = {'quantity': quantity, 'price': price}
         self.save()
+        self.removeorder()
 
     def remove(self, productid):
         if(productid in self.cart):
             del self.cart[productid]
             self.save()
+        self.removeorder()        
 
     def save(self):
         self.session.modified = True
@@ -32,6 +49,8 @@ class Cart:
 
     def clear(self):
         del self.session['cart']
+        del self.session['order']
+
 
     def keys(self):
         return map(lambda k: int(k), self.cart.keys())

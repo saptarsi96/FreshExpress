@@ -40,7 +40,7 @@
          <div style="margin:auto">
           {%with sid=j.1%}
           {%with oid=j.4%}
-            <a href="{% url 'orders:place' sid oid %}" class="btn btn-success">Checkout</a>
+           <!---- <a href="{% url 'orders:place' sid oid %}" class="btn btn-success">Checkout</a>-->
             <form action="../redirectupdateorder" method="POST">
               {% csrf_token %}
               <input type="hidden" name="oid" value="{{oid}}">
