@@ -1,6 +1,6 @@
 var timer = 0,
-    timeTotal = 110000,
-    timeCount = 110,
+    timeTotal = 20000,
+    timeCount = 20,
     timeStart = 0,
     cFlag;
 

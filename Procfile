@@ -1,1 +1,1 @@
-web: gunicorn ecommerce.wsgi --log-file=- --workers=7 --timeout=1200
+web: gunicorn ecommerce.wsgi --log-file=- 
