@@ -8,8 +8,7 @@
 
 30th MAY 2021
 
- <div class=text-justify>
-# Introduction & Background
+ # Introduction & Background
 
 After the immense success of [<u>Flex</u>](https://flex.amazon.in/) &
 [<u>IHS</u>](https://ihs.mobinius.com/website/) programmes in India we
@@ -59,11 +58,10 @@ streamlined delivery system.
 The following Business model & Requirements apply to this Proposal:
 
 There are two components of a business model — qualitative and
-quantitative. Let us begin by looking into its ***qualitative*** aspects
-:
+quantitative. Let us begin by looking into its ***qualitative*** aspects:
 
 **Value Proposition :** The fundamental proposition of the company to
-the various stakeholders is simple and may be described as follows:
+the various stakeholders is simple and may be described as follows :
 
 1.  **User --** The service offers convenience of saving time by
     delivering the items in the shortest possible amount of time.It
@@ -172,23 +170,26 @@ customary rewards for their service to this programme.
 3.  Reducing the latent distance between the sellers and buyers .
 
 4.  Facilitating easier and hassle-free replacement and alteration of
-    > products
+    products
 
-## The description of the project is as follows:
+## The components of the project is as follows:
 
-1.  \[DESCRIPTION 1\]
+1.  Customer-Facing Application
 
-2.  \[DESCRIPTION 2\]
+2.  Store-Keeper Facing Application
 
-3.  \[DESCRIPTION 3\]
+3.  Recommendation Engine
+
+4.  [<u>GeoHashed</u>](https://en.wikipedia.org/wiki/Geohash)
+    distributed database according to the locality
 
 # 
 
 # Project Scope
 
-This project is based on a hyperlocal delivery model . It can be defined
+This project is based on a hyperlocal delivery model.It can be defined
 as an online business model in which the on demand needs of a customer
-are met through local offline shops via a digital plattform .The demand
+are met through local offline shops via a digital plattform . The demand
 for goods and services of customers like grocery ,local items (small
 items ),Kirana shops,Local items are met instantly without going there.
 
@@ -209,7 +210,8 @@ time possible.
 
 4.  Nearest shop is selected resulting in low waiting period time
 
-5.  
+5.  In case of unavailability of items,orders should be fulfilled via
+    flexible delivery
 
 ## Acceptance of the work is contingent on the following acceptance criteria:
 
@@ -239,8 +241,9 @@ time possible.
 | Client Project Delivery                        | 30/05/2021 |
 | Client Project Demo                            | 11/06/2021 |
 
-The need-date for project completion is \[DATE\]. Bidders may propose a
-date earlier or later, and will be evaluated accordingly.
+The need-date for project completion is 30th May 2021. Judges may
+propose a date earlier or later, and work has to be ramped up
+accordingly.
 
 # 
 
@@ -292,4 +295,44 @@ with cost being the most important factor:
 \[COMPANY NAME\] reserves the right to award to the bidder that presents
 the best value to \[COMPANY NAME\] as determined solely by \[COMPANY
 NAME\] in its absolute discretion.
- </div>
+
+<img src="media/image1.png" style="width:4.71875in;height:3.83333in" /><img src="media/image2.png" style="width:6.17708in;height:4.11979in" />
+
+# 
+
+# Active Issues
+
+1.  Heroku application deployment times out at
+    > **[<u>30secs.</u>](https://devcenter.heroku.com/articles/request-timeout)**
+    > In local deployment the timeout can be fixed to **2-5 minutes**
+    > which is the practical time for a shopkeeper to accept an order in
+    > an ideal scenario.The range can be made flexible accordingly.
+    > **Possible Resolutions** : Moving the application to
+    > [<u>AWS</u>](https://aws.amazon.com/blogs/aws/elb-idle-timeout-control/#:~:text=In%20order%20to%20better%20support,through%20the%20AWS%20Management%20Console.)
+    > where the timeout can be maintained in a range of 1-3600 secs
+    > which is practical for our intended scenarios.
+
+2.  “Get your location” button in the homepage is not working . The
+    > button takes user location through HTML Geolocation API and prints
+    > in the console. For our test scenario we have defined an ideal
+    > region in the [<u>map</u>](https://goo.gl/maps/7RMfRBFCAozMq93a9)
+    > with 12 nearby shops. **Possible Resolutions :** Once the
+    > prototype is successfully implemented and business data is
+    > collected this model can be extended and implemented to every
+    > location in any region in India. The user location will then be
+    > stored into a database for further processing by the
+    > recommendation engine.
+
+# 
+
+# Future Plans
+
+1.  Drone Based Delivery Subsystem using Amazon Air.
+
+2.  Use of the existing transportation systems to facilitate faster
+    > deliveries.
+
+3.  Amazon Pay payment integration for faster checkouts and payment
+    > processing.
+
+4.  Amazon Flex integration with the existing application.
