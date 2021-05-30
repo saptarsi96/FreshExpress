@@ -16,12 +16,12 @@
         <td><center>{{order.order.id}}</center></td>
         <td>
             {% for item in order.items %}
-                {{item.orderitem.product.name}}|Qty:({{item.orderitem.quantity}})
+                {{item.orderitem.product.name}}|Qty:({{item.orderitem.quantity}})<br>
             {% endfor %}
         </td>
         <td>
-            
-            {{order.order.user.first_name}} {{order.order.user.last_name}},<br>
+            {{order.order.user}}<br>
+            {{order.order.user.first_name}} {{order.order.user.last_name}}<br>
            {{order.order.address}},{{order.order.city}} - {{order.order.pin_code}}
         </td>
         <td>{{order.order.total_price}}</td>

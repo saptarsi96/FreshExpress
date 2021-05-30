@@ -7,6 +7,7 @@ from datetime import date
 from .inventoryforms import StoreForm, StatusForm, StoreItemForm
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 @login_required
 def storehome(request):  # to add or remove the stores
@@ -20,6 +21,7 @@ def storehome(request):  # to add or remove the stores
 def redirecthome(request):  # to add or remove the stores
     # fetch the form
     form = StoreForm(request.POST)
+    
     if form.is_valid():
         # create a merchant account for user if not exists
         try:
@@ -29,12 +31,30 @@ def redirecthome(request):  # to add or remove the stores
             shopowner.save()
         # Add extra items to model form and save the shop object
         shop = form.save(commit=False)
-        shop.merchant = shopowner
-        shop.lat = 0
-        shop.long = 0
-        shop.save()
+        try:
+            shop2 = Store.objects.filter(merchant__user=request.user)[0]
+            shop2.name = shop.name
+            shop2.adress = shop.address
+            shop2.contact = shop.contact
+            shop2.start = shop.start
+            shop2.end = shop.end
+            shop2.gst = shop.gst
+            shop2.save()
+            messages.success(request, 'Successfully updated the store information.')
+        except:
+            shop.merchant = shopowner
+            shop.lat = 0
+            shop.long = 0
+            shop.save()
+            messages.success(request, 'You have successfully registered as merchant with below store information.')
     # redirect to store page
-    return HttpResponseRedirect("store")
+    try:
+        shop = Store.objects.filter(merchant__user=request.user)[0]
+        form = StoreForm(initial={'name':shop.name,'address':shop.address,'contact':shop.contact,'start':shop.start,'end':shop.end,'gst':shop.gst})
+    except:
+        pass
+    context = {'form':form}
+    return render(request, 'storeinfo.html', context)
 
 
 @login_required

@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% load thumbnail %} {% block title %} Store Info {% endblock title %} 
+{% block javascript %}
+
+{% endblock javascript %}
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<h3>Please enter the your latest store information. </h3>
+<small>Note: One merchant account can only have one store.</small><br><br>
+<form action="" method="post">
+                {% csrf_token %}
+                {{ form | crispy}}
+    <input type="submit" value="Update/Add" class="btn btn-success">
+</form>
+
+{% endblock content %}

@@ -86,7 +86,7 @@ def ReceivedOrders(request):
     present = StoreItem.objects.filter(shop=shop,status=True).values_list('product__id',flat=True)
     for order in allorders:
         # only fetch the items which are available to the shopkeeper
-        li = OrderItem.objects.filter(order=order,product__id__in=present).values('product__name', 'id','order__id','product__id')
+        li = OrderItem.objects.filter(order=order,product__id__in=present).values('product__name', 'id','order__id','product__id','quantity')
         if(len(list(li))!=0):
             idlist = li.values('id')
             li = list(li)

@@ -43,7 +43,7 @@
       <td>
           
         {% for item in orderid %}
-            <input type="checkbox" name="{{item.id}}" class="order{{item.order__id}}" {%if item.product__id in present %} checked {% endif %} onclick="codeAddress()"> {{item.product__name}} {{item.product__id}} <br>
+            <input type="checkbox" name="{{item.id}}" class="order{{item.order__id}}" {%if item.product__id in present %} checked {% endif %} onclick="codeAddress()"> {{item.product__name}} {{item.product__id}}|Qty:{{item.quantity}} <br>
         {% endfor %}
         <form action="redirectreceivedorders" method="POST"> 
             {% csrf_token %}
