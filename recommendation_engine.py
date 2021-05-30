@@ -175,7 +175,7 @@ def recommendation_algo(plid, request):
     if len(cart) == 0:
         return redirect('cart:cart_details')
     if(cart.getorder()=="NULL"):
-        order = Order(city="Kolkata",pin_code="700153",address="Sappy Addr")
+        order = Order(city="Telengana",pin_code="50078",address="BPHC Campus")
         #print("printing order id:")
         #print(order.id)
         order.user = request.user
