@@ -1,8 +1,6 @@
 ![](RackMultipart20210527-4-be7gta_html_44f138ac10556814.gif)
 
-# **Fresh**
-
-# **Express**
+# **FreshExpress**
 
 ## **Amazon HackOn submission for team CodingAlphas**
 
