@@ -122,6 +122,39 @@
         {% for message in messages %} {{message}} {% endfor %}
       </div>
       {% endif %} {% block content %} {% endblock content %}
+
+      <div class="modal" id="supportmodal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Support Query</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              {% load crispy_forms_tags %}
+                  <form action="{% url 'help' %}" method="post">
+                    {% csrf_token %}
+                    <!-- Form Name -->
+                    
+                    Name : <input type="text" value=" " name="username" class="form-control input-md" ><br>
+                    Email : <input type="text" value=" " name="email" class="form-control input-md" ><br>
+                    Enter your question : <input type="textarea" rows="5" cols="50" value=" " name="name" class="form-control input-lg"><br>
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                  </form>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+
+      <a type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#supportmodal">
+        Help and Support
+      </button>
+
     </div>
   </body>
 </html>
