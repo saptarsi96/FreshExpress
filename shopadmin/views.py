@@ -140,13 +140,17 @@ def send(username,email,queries):
     password="ajyfgrezutgkypdd"
     try:
         subject ="""\
-        Support FreshEXpress
+        Support FreshExpress
         """
         text="""\
-        Hello {0},
-        we have received your query regarding"{1}".Our Agent  will contact you soon 
-        Thankyou
-        Stay safe and stay connected """.format(username,queries)
+        Greetings from FreshExpress,
+        We have received your query regarding"{1}".Our Customer Support Executive will contact you soon.
+        
+        Thank you for using FreshExpress.
+        Stay safe and stay connected 
+        Sincerly,
+        The FreshExpress Service Team
+        """.format(username,queries)
         conn=smtplib.SMTP('imap.gmail.com',587)
         conn.ehlo()
         conn.starttls()
