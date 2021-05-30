@@ -132,6 +132,7 @@ def UpdateOrder(request):
             shop = Store.objects.get(id=form.cleaned_data['sid'])
             order.store = shop
             order.status = "Pending"
+            order.paid = True
             order.save()
             print("Store object updated successfully")
             messages.success(request, 'Your order is successfully placed.')

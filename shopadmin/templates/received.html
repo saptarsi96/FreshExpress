@@ -45,7 +45,7 @@
         {% for item in orderid %}
             <input type="checkbox" name="{{item.id}}" class="order{{item.order__id}}" {%if item.product__id in present %} checked {% endif %} onclick="codeAddress()"> {{item.product__name}} {{item.product__id}}|Qty:{{item.quantity}} <br>
         {% endfor %}
-        <form action="redirectreceivedorders" method="POST"> 
+        <form action="{% url 'shopadmin:redirectreceivedorders' %}" method="POST"> 
             {% csrf_token %}
         <input type="text" id="order{{orderid.0.order__id}}" name="orderitems" class="order" value="" hidden >
         <input type="text" id="orderid" name="orderid" value="{{orderid.0.order__id}}" hidden>
