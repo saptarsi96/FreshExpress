@@ -14,7 +14,7 @@
         <!-- Modal body -->
         <div class="modal-body">
           {% load crispy_forms_tags %}
-              <form action="../redirectadditem" method="post">
+              <form action="{% url 'shopadmin:redirectadditem' %}" method="post">
                 {% csrf_token %}
                 {{ form | crispy}}
                 <input type="submit" value="Submit">
@@ -32,8 +32,8 @@
           </button>
           <br><br><center>
               &nbsp;<br>
-            Total Orders: 100<br>
-          Ratings: 3 <br>
+            Total Orders: {{total_orders}}<br>
+          Ratings: {{rating}} <br>
           </center>
           
       </div>

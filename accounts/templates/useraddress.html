@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% load thumbnail %} {% block title %} Store Info {% endblock title %} 
+{% block javascript %}
+
+{% endblock javascript %}
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<h3> Update your address details. </h3>
+
+<form action="" method="post">
+                {% csrf_token %}
+                {{ form | crispy}}
+    <input type="submit" value="Update/Add" class="btn btn-success">
+</form>
+
+{% endblock content %}

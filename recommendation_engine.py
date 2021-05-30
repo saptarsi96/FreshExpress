@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect, Http404, HttpResponse
 from cart.cart import Cart
 from django.contrib import messages
 from time import sleep
+from accounts.models import UserAddress
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ecommerce.settings")
 django.setup()
@@ -175,7 +176,16 @@ def recommendation_algo(plid, request):
     if len(cart) == 0:
         return redirect('cart:cart_details')
     if(cart.getorder()=="NULL"):
-        order = Order(city="Telengana",pin_code="50078",address="BPHC Campus")
+        try:
+            addr2 = UserAddress.objects.filter(user=request.user)[0]
+            usercity = addr2.city 
+            userpincode = addr2.pincode
+            useraddress = addr2.address
+        except:
+            usercity = "Telangana"
+            userpincode = "50078"
+            useraddress = "BPHC Campus"
+        order = Order(city=usercity,pin_code=userpincode,address=useraddress)
         #print("printing order id:")
         #print(order.id)
         order.user = request.user
