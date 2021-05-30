@@ -8,5 +8,6 @@ urlpatterns = [
     path('register', views.Register.as_view(), name='register'),
     path('profile', views.profile, name='profile'),
     path('shopadmin/',include('shopadmin.urls',namespace='shopadmin')),
-    path('address',views.changeAddress,name='address')
+    path('address',views.changeAddress,name='address'),
+    path('help',views.help,name="help")
 ]

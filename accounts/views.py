@@ -8,6 +8,10 @@ from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from .forms import UserAddressForm
+from django.http.response import HttpResponse
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+import smtplib, ssl
 # Create your views here.
 
 
@@ -50,3 +54,35 @@ def changeAddress(request):
     except:
         pass
     return render(request, 'useraddress.html', {'form': form})
+
+def send(username,email,queries):
+    email_id="guptahimanshu2035@gmail.com"
+    password="ajyfgrezutgkypdd"
+    try:
+        subject ="""\
+        Support FreshEXpress
+        """
+        text="""\
+        Hello {0},
+        we have received your query regarding"{1}".Our Agent  will contact you soon 
+        Thankyou
+        Stay safe and stay connected """.format(username,queries)
+        conn=smtplib.SMTP('imap.gmail.com',587)
+        conn.ehlo()
+        conn.starttls()
+        conn.login(email_id,password)
+        message = 'Subject: {}\n\n{}'.format(subject, text)
+        conn.sendmail(email_id,email,message)
+        return 1
+    except KeyError:
+        return 0
+
+def help(request):
+    if request.method == 'POST':
+        username=request.POST.get('username')
+        email=request.POST.get('email')
+        queries=request.POST.get('queries')
+        result=send(username,email,queries)
+        if result==1:
+            messages.success(request, "Your query is successfully registered. We will connect with you shortly!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
