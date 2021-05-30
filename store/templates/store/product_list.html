@@ -1,6 +1,28 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% load thumbnail %}
 {%block title %}Store{% endblock title %}
 {%block content %}
+<div class="modal" id="supportModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Help & Support</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        {% load crispy_forms_tags %}
+            <form  method="post">
+              {% csrf_token %}
+              <input type="submit" value="Submit">
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 <style>
   
   </style>
