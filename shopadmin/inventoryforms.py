@@ -11,6 +11,7 @@ class StoreForm(ModelForm):
         fields = '__all__'
         exclude = ['merchant', 'lat', 'long',
                    'rating', 'shop_status', 'total_orders']
+        labels = {'name':"Name of the Store",'start':'Start time of store (HH:MM:SS)', 'end':'End time of store (HH:MM:SS)'}
 
 
 class StatusForm(forms.Form):
