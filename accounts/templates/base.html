@@ -95,8 +95,6 @@
                 <a href="{% url 'shopadmin:acceptedorders'%}" class="dropdown-item">Accepted Orders</a>
                 <a href="{% url 'shopadmin:inventory'%}" class="dropdown-item">Inventory</a>
                 <a href="{% url 'shopadmin:redirectstore'%}" class="dropdown-item">Update Store</a>
-                {% else %}
-                <a href="{% url 'shopadmin:redirectstore'%}" class="dropdown-item">Register as Merchant</a>
                 {% endif %}
                 <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
               </div>

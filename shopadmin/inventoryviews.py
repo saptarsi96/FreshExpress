@@ -64,12 +64,13 @@ def inventoryhome(request):  # to add or remove the items from the store
     except:
         print("current user does not have any shops, return to the home page")
         return HttpResponseRedirect('/shopadmin')
-    items = StoreItem.objects.filter(shop=shop)
+    items = StoreItem.objects.filter(shop=shop).order_by('id')
     form = StoreItemForm(initial={'shop': shop})
+    total_orders = Order.objects.filter(store=shop,status="Delivered").count()
     paginator = Paginator(items, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj, 'form': form}
+    context = {'page_obj': page_obj, 'form': form,'total_orders':total_orders,'rating':shop.rating}
     return render(request, 'inventory.html', context)
 
 
