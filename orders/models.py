@@ -87,10 +87,10 @@ class RejectedOrder(models.Model):
     shop = models.ForeignKey(Store, on_delete=models.CASCADE,default=0)
     order = models.ForeignKey(Order, on_delete=models.CASCADE,default=0)
 
-class UserAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=1000)
-    pincode = models.CharField(max_length=7)
-    city = models.CharField(max_length=255)
-    lat = models.FloatField()
-    long = models.FloatField()
+# class UserAddress(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     address = models.CharField(max_length=1000)
+#     pincode = models.CharField(max_length=7)
+#     city = models.CharField(max_length=255)
+#     lat = models.FloatField()
+#     long = models.FloatField()
