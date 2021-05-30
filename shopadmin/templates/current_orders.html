@@ -10,7 +10,7 @@
 
 {% if page_obj %}
 <table class="table table-striped table-bordered"> 
-    <tr><th><center>Order ID</center></th><th><center>Order Items</center></th><th><center>Address</center></th><th><center>Price</center></th> <th><center>Payment Status</center></th><th><center>Mark Delivered</center></th></tr>
+    <tr><th><center>Order ID</center></th><th><center>Order Items</center></th><th><center>Address</center></th><th><center>Price</center></th> <th><center>Payment Status</center></th><th><center>Mark Delivered</center></th><th>Order Placed Date</th></tr>
     {% for order in page_obj %}
     <tr>
         <td><center>{{order.order.id}}</center></td>
@@ -38,6 +38,9 @@
                 <input type="hidden" value="{{order.order.id}}" name="order">
                 <input type="submit" value="Delivered" class="btn btn-success">
             </form>
+        </td>
+        <td>
+            {{order.order.created}}
         </td>
     </tr>
     {% endfor %}
